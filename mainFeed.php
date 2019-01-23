@@ -1,10 +1,73 @@
 <?php
   session_start();
+  $posts = "";
+  $newPost = "";
+  $errorText = "";
+  if(!isset($_SESSION['currentCategory'])){
+    $_SESSION['currentCategory'] = 0;
+  }
+  $currentCategory = 0;
   if(!isset($_SESSION['userID'])){
     header('location: index.php');
     die();
   } else {
     $userName = $_SESSION['userID'];
+  }
+  if(!isset($_SESSION['tableConnection'])){
+    $dbName = "socialmediadb";
+    $name = "Mahmoud";
+    $password = "mahmoud1996";
+    $conn =  new mysqli("localhost",$name,$password,$dbName);
+  } else {
+    $conn = $_SESSION['tableConnection'];
+  }
+  if($_GET){
+    if(isset($_GET['button0'])) {$_SESSION['currentCategory'] = 0;}
+    else if(isset($_GET['button1'])) {$_SESSION['currentCategory'] = 1;}
+    else if(isset($_GET['button2'])) {$_SESSION['currentCategory'] = 2;}
+    else if(isset($_GET['button3'])) {$_SESSION['currentCategory'] = 3;}
+    else if(isset($_GET['button4'])) {$_SESSION['currentCategory'] = 4;}
+    else{$_SESSION['currentCategory'] = 5;}
+  }
+  if($_POST){
+    $postText = $_POST['postText'];
+    if($postText == ""){
+      $errorText = "please enter some text";
+    }else{
+      $postcategory = $_POST['postcategory'];
+      $userIdObject = $conn->query("SELECT ID FROM usertable WHERE Username = '$userName'");
+      $userIdArray = $userIdObject->fetch_assoc();
+      $userId = $userIdArray["ID"];
+      $conn->query("INSERT INTO `posttable`(`userId`,`text`, `category`) VALUES ('$userId','$postText','$postcategory')");
+    }
+  }
+  $currentCategory = $_SESSION['currentCategory'];
+  $postObject = $conn->query("SELECT postid FROM posttable WHERE category = '$currentCategory'");
+  while($row = $postObject->fetch_assoc()){
+    foreach($row as $key => $value){
+      //get all the post data from the row
+      $innerPostObject = $conn->query("SELECT * FROM posttable where postid = '$value'");
+      $row = $innerPostObject->fetch_assoc();
+      //use the category id gotten from post table to get the name of the category name from category table
+      $catValue = $row["category"];
+      $categoryPostObject = $conn->query("SELECT category FROM catagorytable where categoryId = '$catValue'");
+      $catName = $categoryPostObject->fetch_assoc();
+      //use the user id gotten from post table to get the name of the user name from category table
+      $userValue = $row["userId"];
+      $usernamePostObject = $conn->query("SELECT Username FROM usertable where ID = '$userValue'");
+      $Username = $usernamePostObject->fetch_assoc();
+      //create the html code using the html template
+      $newPost .= '<div class="postHolder">';
+      $newPost .= '<div class="postTitle"><div class="postUserImageSpace"><img class="postUserImage" src="userImages/userDefault.png">';
+      $newPost .= '</div><h2>'.$Username["Username"].' Posted:</h2><h3 class="categoryLabelInPost">'.$catName["category"].'<h3><h3>'.$row["date"].'<h3></div>';
+      $newPost .= '<div class="postText"><p>'.$row["text"].'</p></div><div class="buttonHolder">';
+      $newPost .= '<button class="emotiBtns">👍<sup class="emotiBtnText">'.$row["likes"].'</sup></button>';
+      $newPost .= '<button class="emotiBtns">🤬<sup class="emotiBtnText">'.$row["hates"].'</sup></button>';
+      $newPost .= '<button class="emotiBtns">🙊<sup class="emotiBtnText">'.$row["angers"].'</sup></button>';
+      $newPost .= '<button class="emotiBtns"> 💀<sup class="emotiBtnText">'.$row["deads"].'</sup></button></div></div>';
+      $posts = $newPost . $posts;
+      $newPost = "";
+    }
   }
 ?>
 <!DOCTYPE html>
@@ -21,15 +84,18 @@
 <body id="body">
 
   <header>
-    <h1><b class="siteTitle">Who</b> Says?</h1>
+    <h1>Who Says?</h1>
     <h3>Welcome <?php echo $userName; ?></h3>
+    <h4><?php if(isset($catName)){echo $catName['category'];} ?></h4>
     <nav>
-      <button class="navButton">General</button>
-      <button class="navButton">Sports</button>
-      <button class="navButton">Film/TV</button>
-      <button class="navButton">Funny</button>
-      <button class="navButton">Music</button>
-      <button class="navButton">Games</button>
+      <form method="GET">
+        <button class="navButton" name="button0" value="0">General</button>
+        <button class="navButton" name="button1" value="1">Sports</button>
+        <button class="navButton" name="button2" value="2">Film/TV</button>
+        <button class="navButton" name="button3" value="3">Funny</button>
+        <button class="navButton" name="button4" value="4">Music</button>
+        <button class="navButton" name="button5" value="5">Games</button>
+      </form>
     </nav>
   </header>
 
@@ -39,8 +105,8 @@
 
   <div class="postHolder" id="makePostBox">
     <form method="POST">
-      <textarea rows="10" cols="30" class="textInput" id="makePostInput"></textarea>
-      <select class="catagorySelect" id="catagorySelect">
+      <textarea rows="10" cols="30" class="textInput" name="postText" id="makePostInput" required></textarea>
+      <select class="categorySelect" name="postcategory" id="categorySelect">
        <option value="General">General</option>
        <option value="Sports">Sports</option>
        <option value="Film/TV">Film/TV</option>
@@ -49,68 +115,11 @@
        <option value="Games">Games</option>
       </select>
       <button class="generalButton" id="makePostbtn">Post</button>
+      <h5><?php echo $errorText; ?></h5>
     </form>
   </div>
 
-  <div id="posts">
-    <div class="postHolder">
-            <div class="postTitle">
-              <div class="postUserImageSpace">
-                <img class="postUserImage" src="userImages/user0.gif">
-              </div>
-              <h2>Mahmoud Posted:</h2>
-              <h3 class="catagoryLabelInPost">Funny<h3>
-              <h3>Today 12:34pm<h3>
-            </div>
-        <div class="postText">
-          <p>You need to see a phsycotherapist.</p>
-        </div>
-        <div class="buttonHolder">
-            <button class="emotiBtns">👍<sup class="emotiBtnText">42</sup></button>
-            <button class="emotiBtns">🤬<sup class="emotiBtnText">12</sup></button>
-            <button class="emotiBtns">🙊<sup class="emotiBtnText">4</sup></button>
-            <button class="emotiBtns"> 💀<sup class="emotiBtnText">32</sup></button>
-        </div>
-      </div>
-    <div class="postHolder">
-          <div class="postTitle">
-            <div class="postUserImageSpace">
-              <img class="postUserImage" src="userImages/user1.jpg">
-            </div>
-            <h2>Joe Posted:</h2>
-            <h3 class="catagoryLabelInPost">Film/TV<h3>
-            <h3>Today 11:34am<h3>
-          </div>
-          <div class="postText">
-            <p>unpopular opinion time: the godfather is over rated!</p>
-          </div>
-          <div class="buttonHolder">
-              <button class="emotiBtns">👍<sup class="emotiBtnText">0</sup></button>
-              <button class="emotiBtns">🤬<sup class="emotiBtnText">25</sup></button>
-              <button class="emotiBtns">🙊<sup class="emotiBtnText">0</sup></button>
-              <button class="emotiBtns"> 💀<sup class="emotiBtnText">12</sup></button>
-          </div>
-        </div>
-    <div class="postHolder">
-            <div class="postTitle">
-              <div class="postUserImageSpace">
-                <img class="postUserImage" src="userImages/user3.jpg">
-              </div>
-              <h2>Label Posted:</h2>
-              <h3 class="catagoryLabelInPost">Sports<h3>
-              <h3>Today 1:34am<h3>
-            </div>
-            <div class="postText">
-              <p>I really like footballs. they're' so round.</p>
-            </div>
-            <div class="buttonHolder">
-                <button class="emotiBtns">👍<sup class="emotiBtnText">152</sup></button>
-                <button class="emotiBtns">🤬<sup class="emotiBtnText">0</sup></button>
-                <button class="emotiBtns">🙊<sup class="emotiBtnText">0</sup></button>
-                <button class="emotiBtns"> 💀<sup class="emotiBtnText">0</sup></button>
-            </div>
-          </div>
-  </div>
+  <?php echo $posts; ?>
 
   <script>
     //display box:
@@ -133,7 +142,7 @@
     //post status
     //document.getElementById("makePostbtn").addEventListener("click",makePost);
     function makePost(){
-      var htmlCode = '<div class="postHolder"><div class="postTitle"><div class="postUserImageSpace"><img class="postUserImage" src="userImages/user2 .jpg"></div><h2> ' + userName + ' Posted:</h2><h3>Today 12:34pm<h3></div><div class="postText"><p>' + document.getElementById("makePostInput").value + '</p></div><div class="buttonHolder"><button class="emotiBtns">👍<sup class="emotiBtnText">0</sup></button><button class="emotiBtns">🤬<sup class="emotiBtnText">0</sup></button><button class="emotiBtns">🙊<sup class="emotiBtnText">0</sup></button><button class="emotiBtns"> 💀<sup class="emotiBtnText">0</sup></button></div></div>';
+      var htmlCode = '';
       document.getElementById("posts").innerHTML = htmlCode + document.getElementById("posts").innerHTML;
       document.getElementById("makePostInput").value = "";
       //setting up buttons again

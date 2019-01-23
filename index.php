@@ -6,6 +6,7 @@
   $whatHappened = "";
   //connecting to DB
   $conn =  new mysqli("localhost",$name,$password,$dbName);
+  $_SESSION['tableConnection'] = $conn;
   if ($conn->connect_error){
     echo "<h5>Database error: " . mysqli_connect_error() . "</h5>";
   }
@@ -16,7 +17,8 @@
       $loginPassword = $_POST["loginPassword"];
       $passObject = $conn->query("SELECT Password FROM usertable WHERE Username = '$loginUsername'");
       $pass = $passObject->fetch_assoc();
-      if($loginPassword == $pass['Password']){
+      $hashedPassword = $pass['Password'];
+      if(password_verify($loginPassword, $hashedPassword)){
         $whatHappened = "<b class='inputLabel'>Logged in as " . $loginUsername . "</b><br>";
         session_start();
         $_SESSION['userID'] = $loginUsername;
@@ -31,13 +33,18 @@
       $registerEmail = $_POST["registerEmail"];
       $registerPassword1 = $_POST["registerPassword1"];
       $registerPassword2 = $_POST["registerPassword2"];
-      $passObject = $conn->query("SELECT Username FROM usertable WHERE Username = '$registerUsername'");
-      echo gettype($passObject);
-      if ($registerPassword1 == $registerPassword2){
-        $conn->query("INSERT INTO `usertable`(`ID`, `Username`, `Email`, `Password`, `Premissions`) VALUES (NULL,'$registerUsername','$registerEmail','$registerPassword2','0')");
-        $whatHappened = "<b class='inputLabel'>Registered as " . $registerUsername . "</b>";
+      $userCheckObject = $conn->query("SELECT Username FROM usertable WHERE Username = '$registerUsername'");
+      $userCheck = $userCheckObject->fetch_assoc();
+      if(!isset($userCheck)){
+        if ($registerPassword1 == $registerPassword2){
+          $hashedPassword = password_hash($registerPassword1, PASSWORD_DEFAULT);
+          $conn->query("INSERT INTO `usertable`(`ID`, `Username`, `Email`, `Password`, `Premissions`) VALUES (NULL,'$registerUsername','$registerEmail','$hashedPassword','0')");
+          $whatHappened = "<b class='inputLabel'>Registered as " . $registerUsername . "</b>";
+        } else {
+          $whatHappened = "<b class='inputLabel'>Make sure both passwords are the same!</b>";
+        }
       } else {
-        $whatHappened = "<b class='inputLabel'>Make sure both passwords are the same!</b>";
+        $whatHappened = "<b class='inputLabel'>That username is taken!</b>";
       }
     }
   }
@@ -58,49 +65,57 @@
 <body id="body">
 
   <header>
-    <h1><b class="siteTitle">Who</b> Says?</h1>
-    <h3>Find out what their talking about!</h3>
+    <h1>Who Says?</h1>
+    <h3>Find out what they're talking about!</h3>
   </header>
 
   <div class="indexMainHolder">
     <div class="indexImageHolder"></div>
     <div class="indexMainForm">
-      <h4 class="inputTitle">Login or sign up:</h4>
-      <form class="loginForm" id="loginForm" method="POST">
-          <p class="inputLabel">Name:</p>
-          <input type="text" class="loginInput" name="loginUsername" tabindex="1" required>
-          <p class="inputLabel">Password:</p>
-          <input type="password" class="loginInput" name="loginPassword" tabindex="3" required><br>
-          <div class="indexButtonHolder">
-            <button class="loginButton"  name="loginButton" tabindex="4">Login</button><br>
-          </div>
-      </form>
-      <form class="loginForm" id="registerForm"  method="POST">
-        <p class="inputLabel">Name:</p>
-        <input type="text" class="loginInput" name="registerUsername" tabindex="1" required>
-        <p class="inputLabel">Email:</p>
-        <input type="email" class="loginInput" name="registerEmail" tabindex="2" required>
-        <p class="inputLabel">Password:</p>
-        <input type="password" class="loginInput" name="registerPassword1" tabindex="3" required>
-        <p class="inputLabel">Confirm Password:</p>
-        <input type="password" class="loginInput" name="registerPassword2" tabindex="3" required><br>
-        <div class="indexButtonHolder">
-          <button class="loginButton" name="registerButton" tabindex="5">Go</button><br>
-        </div>
-      </form>
-        <div class="indexButtonHolder">
-          <button class="loginButton otherButton" id="regToggleButton" onClick="toggleRegistration()" tabindex="6">Register</button>
-          <button class="loginButton otherButton" onClick="goToFeed()" tabindex="6">Skip>></button>
-        </div>
-        <?php
-        if($_POST){
-          echo $whatHappened;
-        }
-        ?>
-      </form>
+
     </div>
   </div>
-
+  <div class="container2">
+    <div class="row">
+    <form class="loginForm" id="loginForm" method="POST">
+        <h1 class="loginTitle">Who Says?</h1>
+        <h5 class="inputTitle" styles="style="font-family: 'Unlock', cursive"">Sign in:</h5>
+        <h3 class="formLabel">Name:</h3>
+        <input type="text" class="loginInput" name="loginUsername" tabindex="1" required>
+        <h3 class="formLabel">Password:</h3>
+        <input type="password" class="loginInput" name="loginPassword" tabindex="3" required><br>
+        <div class="indexButtonHolder">
+          <button class="loginbutton"  name="loginButton" tabindex="4">Login</button><br>
+        </div>
+    </form>
+    </div>
+    <div class="row">
+    <form class="loginForm" id="registerForm"  method="POST">
+      <h1 class="loginTitle">Who Says?</h1>
+      <h5 class="inputTitle" styles="style="font-family: 'Unlock', cursive"">Sign up:</h5>
+      <h3 class="formLabel">Name:</h3>
+      <input type="text" class="loginInput" name="registerUsername" tabindex="1" required>
+      <h3 class="formLabel">Email:</h3>
+      <input type="email" class="loginInput" name="registerEmail" tabindex="2" required>
+      <h3 class="formLabel">Password:</h3>
+      <input type="password" class="loginInput" name="registerPassword1" tabindex="3" required>
+      <h3 class="formLabel">Confirm Password:</h3>
+      <input type="password" class="loginInput" name="registerPassword2" tabindex="3" required><br>
+      <div class="indexButtonHolder">
+        <button class="registerbutton" name="registerButton" tabindex="5">Register</button><br>
+      </div>
+    </form>
+    </div>
+      <div class="indexButtonHolder">
+        <a id="regToggleButton" onClick="toggleRegistration()">Register</a>
+      </div>
+      <?php
+      if($_POST){
+        echo $whatHappened;
+      }
+      ?>
+    </form>
+  </div>
   <script>
     var regToggleFlag = 0;
     function toggleRegistration(){
