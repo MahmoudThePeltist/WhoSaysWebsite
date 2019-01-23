@@ -1,15 +1,8 @@
 <?php
-  //Database login information
-  $dbName = "socialmediadb";
-  $name = "Mahmoud";
-  $password = "mahmoud1996";
+  include 'phpconnect.php';
   $whatHappened = "";
-  //connecting to DB
-  $conn =  new mysqli("localhost",$name,$password,$dbName);
-  $_SESSION['tableConnection'] = $conn;
-  if ($conn->connect_error){
-    echo "<h5>Database error: " . mysqli_connect_error() . "</h5>";
-  }
+  //connect to DB
+  $conn = connectToDB();
   if ($_POST){
     //Login handling
     if(isset($_POST["loginButton"])){
