@@ -30,6 +30,9 @@ header{
   margin-top: 0px;
   border-bottom: 15px solid var(--main-color-B);
 }
+.headerLogo{
+  height:150px;
+}
 button {
   background-color: var(--main-color);
   border:0;
@@ -568,7 +571,8 @@ input:hover,
 }
 
 .titleText {
-  color: var(--main-font-color)
+  color: var(--main-font-color);
+  font-size: 38pt;
 }
 
 .subtitleText {
