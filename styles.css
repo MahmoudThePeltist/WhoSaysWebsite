@@ -1,16 +1,21 @@
-body{
+  :root {
+    --main-color: #FF4500;
+    --main-color-B: #FF7F50;
+    --second-color: #909090;
+    --second-color-B: #e0e0e0;
+    --second-color-D: #404040;
+  }
+
+  body{
     background-image: url('pics/10.png');
+    background-color:white;
     text-align: center;
     opacity:0.9;
-  }
-  image {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 5px;
-    width: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+    position:relative;
   }
   header{
-    background-color:	#FF4500;
+    background-color:	var(--main-color);
     text-align: center;
     font-family: 'Unlock', cursive;
     max-width: 1600px;
@@ -18,69 +23,111 @@ body{
     overflow: hidden;
     font-size: 32pt;
     margin:2% auto;
-    border-bottom: 15px solid #FF7F50;
+    border-bottom: 15px solid var(--main-color-B);
   }
   button {
-    background-color: #FF4500;
+    background-color: var(--main-color);
     border:0;
     transition: all 0.5s;
   }
 
   button:hover{
-    background-color: #FF4500;
+    background-color: var(--main-color);
   }
+
   .userData{
     position:absolute;
     float:left;
-    width:300px;
-    background-color:#808080;
+    width:400px;
+    height:150px;
+    background-color:var(--second-color);
     border-bottom-right-radius: 100%;
+    overflow:hidden;
     transition: all 0.5s;
   }
-
+  .userData:hover, .userDataUserName{
+    background-color:var(--second-color-B);
+    color:#000;
+  }
+  .headerUserImageSpace{
+    float:left;
+    margin:10px;
+    height:90px;
+    width:90px;
+  }
+  .changeUserImageForm{
+    margin:0;
+  }
+  .changeUserImage{
+    float:left;
+    margin: 0;
+    margin-top: -26%;
+    margin-left: 10px;
+    height:90px;
+    width:90px;
+    padding:10px;
+    border-radius:5px;
+    border:none;
+    background-color: white;
+    font-size: 10pt;
+    opacity: 0;
+    transition: all 0.2s;
+  }
+  .changeUserImage:hover{
+    opacity: 0.4;
+  }
   .logOutBtn{
     float:left;
     margin: -10px 0 15px 10px;
-    background-color: #707070;
-    color:white;
+    background-color: var(--second-color-B);
+    color:black;
+    width:90px;
     font-size: 14pt;
     padding:5px;
   }
-  .userData:hover{
-  background-color:#aaa;
-}
+  .logOutBtn:hover{
+    background-color: var(--second-color);
+    color:white;
+  }
+  .userDataUserName{
+    font-size: 18pt;
+    padding:0;
+    font-family: 'unlock', cursive;
+  }
+  .userDataUserRank{
+    font-size: 14pt;
+    font-family: 'unlock', cursive;
+  }
   .emotiBtns{
     font-family:Impact;
-    min-width:35px;
-    min-height:35px;
-    font-size:32pt;
-    background-color: #aaa;
-    }
+    min-width:25px;
+    min-height:25px;
+    font-size:26pt;
+    background-color: var(--second-color);
+  }
   .trashBtn{
     font-family:Impact;
-    min-width:35px;
-    min-height:35px;
+    min-width:25px;
+    min-height:25px;
     font-size:32pt;
     float:right;
-    background-color: #aaa;
+    background-color: var(--second-color);
   }
-  .emotiBtns:hover, .trashBtn:hover{
-  background-color: #eee;
-  }
-
   .generalButton{
-    font-family:'Raleway', sans-serif;
+    font-family: 'unlock', cursive;
     font-size:36pt;
-    background-color: #808080;
+    background-color: var(--second-color);
     color: #ffffff;
     margin-top: 15px;
     margin: auto;
     min-width:400px;
     padding: 10px;
   }
-  .generalButton:hover{
-    background-color: #aaa;
+  .emotiBtns:hover, .trashBtn:hover, .commentBtn:hover, .generalButton:hover{
+  background-color: var(--second-color-B);
+  color:black;
   }
+
   .categorySelect{
     font-family: 'Raleway', sans-serif;
     font-size: 18pt;
@@ -90,7 +137,7 @@ body{
     font-size:26pt;
   }
   .postHolder{
-    background-color:	#FF4500;
+    background-color:	var(--main-color);
     font-family: 'Raleway', sans-serif;
     color:white;
     width:50%;
@@ -101,81 +148,153 @@ body{
     text-align: center;
     margin:50px auto;
   }
-
+  .categoryLabelInPost{
+    float:right;
+    background-color:var(--second-color);
+    margin-bottom:-5px;
+    padding: 5px;
+    border-radius: 15px 15px 0 0;
+    transition: all 0.5s;
+  }
   #makePostBox{
     padding: 15px;
     display:none;
     opacity:0;
     transition:all 0.5s;
   }
-
   .textInput{
     padding:15px;
     width: 80%;
     height:150px;
     font-size: 16pt;
   }
-
   .postTitle{
     text-align: left;
-    font-family: 'Unlock',cursive;
     padding: 2px 10px;
-    background-color: 	#FF4500;
-    border-bottom: 10px solid #808080;
-    font-size: 18pt;
+    background-color: var(--main-color);
+    border-bottom: 10px solid var(--second-color);
+    font-size: 12pt;
+    transition: all 0.5s;
+    overflow: hidden;
   }
-
+  .categoryLabelInPost, .postTitle:hover{
+    border-bottom: 10px solid var(--second-color-B);
+  }
   .postText{
     text-align: left;
     font-family: 'Raleway', sans-serif;
     font-size: 22pt;
   }
-
   .postOpenBtn{
     text-align:center;
-    }
-
+  }
   .postUserImageSpace{
     float:left;
     margin:10px;
-    height:20%;
-    width:20%;
+    height:100px;
+    width:100px;
   }
-
-  .postUserImage{
+  .userImage{
     width: 100%;
     height: 100%;
+    border-radius: 10px;
   }
-
   .postImage{
     width:100%;
   }
+
+  /*Comment section: */
+
+  .commentBtn{
+    font-family:Impact;
+    min-width:25px;
+    min-height:25px;
+    font-size:29pt;
+    margin-bottom: 5px;
+    float:right;
+    background-color: #aaa;
+  }
+  .commentsSection{
+    background-color: var(--second-color-B);
+    margin: 5px;
+    padding: 5px;
+    display: 'block';
+  }
+  .commentsCreation{
+    background-color: var(--main-color-B);
+    margin: 5px;
+    padding: 5px;
+    border-radius: 20px;
+  }
+  .commentInput{
+    width: 70%;
+    font-size:22pt;
+    margin:5px;
+    padding:5px;
+    border: none;
+    border-radius: 4px;
+  }
+  .commentSubmitBtn{
+    font-size:22pt;
+    margin:5px;
+    padding:5px;
+    float:right;
+    color:white;
+    border-radius: 4px;
+    background-color: var(--main-color);
+  }
+  .commentSubmitBtn:hover{
+    background-color: var(--main-color-B);
+    color: #333;
+  }
+  .commentContainer{
+    margin: 5px;
+    padding: 5px;
+  }
+  .commentContainerContainer{
+    margin: 5px;
+    padding: 5px;
+    background-color: var(--main-color-B);
+    border-radius: 20px;
+  }
+  .commentUserImageSpace{
+    float:left;
+    margin:5px;
+    height:70px;
+    width:70px;
+  }
+  .commentUserImage{
+    border-radius: 100%;
+  }
+  .commentUserName{
+    display: inline-block;
+    float: left;
+    font-size: 18pt;
+    margin: 0;
+    margin-left: 15px;
+    margin-bottom: -15px;
+  }
+  .commentDate{
+    text-align: right;
+    font-size: 18pt;
+    margin: 0;
+    margin-right: 15px;
+    margin-bottom: -15px;
+  }
+  .commentText{
+    text-align: left;
+    font-size: 22pt;
+  }
+  /*Other stuff: */
 
   .buttonHolder{
     margin: 0px auto;
     text-align: center;
   }
 
-  body {
-    font-family: Arial, Helvetica, sans-serif;
-    position:relative;
-    background-color:white;
-  }
-
-  .container {
-    position: left;
-    border-radius: 2px;
-    background-color:#404040;
-    padding: 100px 0 10px 0;
-    margin: 50px;
-    width: 400px;
-    float:right;
-    height: 600px;
-  }
-
   /* style inputs and link buttons */
 
-  input {
+  .loginInput {
     width: 70%;
     padding: 12px;
     border: none;
@@ -192,7 +311,7 @@ body{
   font-size: 17px;
   padding: 14px 20px;
   margin: 8px 0;
-  background-color: #FF4500;
+  background-color: var(--main-color);
   color:white;
   }
 
@@ -201,7 +320,7 @@ body{
     font-size: 17px;
     padding: 14px 20px;
     margin: 8px 0;
-    background-color: #FF4500;
+    background-color: var(--main-color);
     color:white;
   }
 
@@ -210,14 +329,14 @@ body{
     opacity: 1;
   }
 
-.loginTitle{
-  text-align:center;
-  color: white;
-  font-family: Arial, Helvetica, sans-serif;
-  margin-top: 20px;
-  font-size: 60px;
-  font-family: 'Unlock', cursive;
-}
+  .loginTitle{
+    text-align:center;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 20px;
+    font-size: 60px;
+    font-family: 'Unlock', cursive;
+  }
 
   h3 {
     font-family: Arial, Helvetica, sans-serif;
@@ -225,7 +344,6 @@ body{
     color: #ffffff;
   }
   .formLabel {
-    margin-left: 5%;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 25px;
     color: #ffffff;
@@ -237,24 +355,24 @@ body{
     appearance: button;
     text-decoration: none;
     color: initial;
-}
+  }
 
-h5{
-  font-size: 25px;
-  color:#FF4500;
-  text-align: center;
-}
-#loginForm{
-  display: block;
-}
-#registerForm{
-  display: none;
-}
+  h5{
+    font-size: 25px;
+    color:var(--main-color);
+    text-align: center;
+  }
+  #loginForm{
+    display: block;
+  }
+  #registerForm{
+    display: none;
+  }
 
-.container2 {
+.container {
   position: left;
   border-radius: 2px;
-  background-color:#404040;
+  background-color: var(--second-color-D);
   padding: 100px 0 10px 0;
   margin: 50px;
   width: 400px;
@@ -270,18 +388,11 @@ h5{
 
 .navButton{
   background-color: grey;
+  font-family: 'unlock', cursive;
   color:white;
   font-size: 18pt;
   padding:5px;
 }
 .navButton:hover{
   background-color: darkgrey;
-}
-
-.categoryLabelInPost{
-  float:right;
-  background-color:#808080;
-  margin-bottom:0px;
-  padding: 5px;
-  border-radius: 15px 15px 0 0;
 }
