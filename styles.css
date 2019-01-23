@@ -1,28 +1,53 @@
   :root {
-    --main-color: #FF4500;
+    /* --main-color: #FF4500;
     --main-color-B: #FF7F50;
-    --second-color: #909090;
+    --main-color-B2: #FFFF00; */
+
+    /* --main-color: #FF4545;
+    --main-color-B: #FF7F7F;
+    --main-color-B2: #FFF0F0; */
+
+    --main-color: #33ccad;
+    --main-color-B: #33aaad;
+    --main-color-B2: #77eeef;
+
+      /* --main-color: #FF0000;
+      --main-color-B: #EE0000;
+      --main-color-B2: #DD0000; */
+
+    /* --second-color: #909090;
     --second-color-B: #e0e0e0;
-    --second-color-D: #404040;
+    --second-color-D: #404040; */
+
+    --second-color: #404040;
+    --second-color-B: #707070;
+    --second-color-D: #101010;
+
+    --font-group-a: 'Montserrat','unlock', cursive;
+    --font-group-b: 'Raleway', sans-serif;
   }
 
   body{
-    background-image: url('pics/10.png');
-    background-color:white;
+    margin:0px;
+    background-color:rgb(230, 236, 240);
     text-align: center;
     opacity:0.9;
     font-family: Arial, Helvetica, sans-serif;
     position:relative;
   }
+  .indexBody{
+    background-image: url('pics/10.png');
+  }
   header{
     background-color:	var(--main-color);
     text-align: center;
-    font-family: 'Unlock', cursive;
-    max-width: 1600px;
+    font-family: var(--font-group-a);
     color:#ffffff;
     overflow: hidden;
     font-size: 32pt;
-    margin:2% auto;
+    width:100%;
+    margin: auto;
+    margin-top: 0px;
     border-bottom: 15px solid var(--main-color-B);
   }
   button {
@@ -35,6 +60,7 @@
     background-color: var(--main-color);
   }
 
+  /*User data box CSS: */
   .userData{
     position:absolute;
     float:left;
@@ -45,7 +71,16 @@
     overflow:hidden;
     transition: all 0.5s;
   }
-  .userData:hover, .userDataUserName{
+  .userData a{
+    color:white;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+  .userData a:hover{
+    color:white;
+    text-decoration:underline;
+  }
+  .userData:hover{
     background-color:var(--second-color-B);
     color:#000;
   }
@@ -61,7 +96,7 @@
   .changeUserImage{
     float:left;
     margin: 0;
-    margin-top: -26%;
+    margin-top: -100px;
     margin-left: 10px;
     height:90px;
     width:90px;
@@ -78,8 +113,8 @@
   }
   .logOutBtn{
     float:left;
-    margin: -10px 0 15px 10px;
-    background-color: var(--second-color-B);
+    margin: -7px 0 15px 10px;
+    background-color:white;
     color:black;
     width:90px;
     font-size: 14pt;
@@ -90,17 +125,20 @@
     color:white;
   }
   .userDataUserName{
-    font-size: 18pt;
+    background-color:white;
+    color:#000;
     padding:0;
-    font-family: 'unlock', cursive;
+    font-size: 18pt;
+    font-family: var(--font-group-a);
   }
   .userDataUserRank{
     font-size: 14pt;
-    font-family: 'unlock', cursive;
+    font-family: var(--font-group-a);
   }
   .emotiBtns{
-    font-family:Impact;
+    font-family: var(--font-group-a);
     min-width:25px;
+    color: white;
     min-height:25px;
     font-size:26pt;
     background-color: var(--second-color);
@@ -109,18 +147,19 @@
     font-family:Impact;
     min-width:25px;
     min-height:25px;
-    font-size:32pt;
+    padding: 4px;
+    font-size:26pt;
     float:right;
-    background-color: var(--second-color);
+    background-color: rgba(255, 255, 255, 0.7);
   }
   .generalButton{
-    font-family: 'unlock', cursive;
-    font-size:36pt;
-    background-color: var(--second-color);
+    font-family: var(--font-group-a);
+    font-size:22pt;
+    background-color: var(--second-color-D);
     color: #ffffff;
     margin-top: 15px;
     margin: auto;
-    min-width:400px;
+    min-width:20%;
     padding: 10px;
   }
   .emotiBtns:hover, .trashBtn:hover, .commentBtn:hover, .generalButton:hover{
@@ -129,16 +168,17 @@
   }
 
   .categorySelect{
-    font-family: 'Raleway', sans-serif;
+    font-family: var(--font-group-b);
     font-size: 18pt;
     margin: 10px;
   }
+  /* Make post stuff:*/
   .makePostBtn{
     font-size:26pt;
   }
   .postHolder{
-    background-color:	var(--main-color);
-    font-family: 'Raleway', sans-serif;
+    background-color: var(--second-color-D);
+    font-family: var(--font-group-b);
     color:white;
     width:50%;
     max-width: 700px;
@@ -168,6 +208,149 @@
     height:150px;
     font-size: 16pt;
   }
+
+/* navbar stuff: *//*      NAVBAR SETTINGS        */
+.navbar {
+  overflow: hidden;
+  background-color: var(--main-color-B);
+}
+.navbar-item {
+  background-color: var(--main-color-B);
+  float: left;
+  font-size: 18px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: all 0.25s;
+}
+.navbar-right {
+  font-family: var(--font-group-a);
+  float:right;
+}
+.navbar-item:hover {
+  color:black;
+  background-color: var(--main-color-B2);
+  cursor: pointer;
+}
+
+/* The dropdown container */
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+  font-size: 18px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit; /* Important for vertical align on mobile phones */
+  margin: 0; /* Important for vertical align on mobile phones */
+}
+
+.dropdown:hover .dropbtn {
+  color:black;
+  background-color: var(--main-color-B2);
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 146px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  float: none;
+  color: black;
+  font-size: 18px;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+/* Add a grey background color to dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  -webkit-animation: fadeEffect 1s;
+  animation: fadeEffect 1s;
+    background-color: var(--second-color-D);
+    font-family: var(--font-group-b);
+    color:white;
+    width:50%;
+    max-width: 700px;
+    overflow:hidden;
+    text-align: center;
+    padding:0px 25px;
+    margin:50px auto;
+}
+
+/* Fade in tabs */
+@-webkit-keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+/*Search bar css*/
+.searchHolder{
+  float:right;
+  margin: -36px 12 0 auto;
+  width: 20%;
+  font-family: var(--font-group-a);
+  font-size: 18pt;
+}
+.searchInput{
+  width:100%;
+  padding: 3.5px 3px;
+  margin: 0;
+  background-color: #ddd;
+  font-size: 18pt;
+  height: inherit;
+  border: none;
+}
+.searchList{
+  position:fixed;
+  text-align: left;
+  width: 20%;
+  margin: 0;
+  padding: 0;
+  list-style-type:none;
+  background-color: #ddd;
+  color: black;
+}
+.searchListItem{
+ transition: all 0.5s;
+ padding:5px 3px;
+}
+.searchListItem:hover{
+ cursor: pointer;
+ background-color: darkgrey;
+ color: white;
+}
+  /*Post stuff:*/
   .postTitle{
     text-align: left;
     padding: 2px 10px;
@@ -177,12 +360,22 @@
     transition: all 0.5s;
     overflow: hidden;
   }
-  .categoryLabelInPost, .postTitle:hover{
+  .postTitle:hover{
     border-bottom: 10px solid var(--second-color-B);
+  }
+  .postTitle:hover .categoryLabelInPost {
+    background-color: var(--second-color-B);
+  }
+  .postTitle a{
+    color:white;
+    text-decoration: none;
+  }
+  .postTitle a:hover{
+    text-decoration: underline;
   }
   .postText{
     text-align: left;
-    font-family: 'Raleway', sans-serif;
+    font-family: var(--font-group-b);
     font-size: 22pt;
   }
   .postOpenBtn{
@@ -215,13 +408,13 @@
     background-color: #aaa;
   }
   .commentsSection{
-    background-color: var(--second-color-B);
+    background-color: var(--second-color-D);
     margin: 5px;
     padding: 5px;
     display: 'block';
   }
   .commentsCreation{
-    background-color: var(--main-color-B);
+    background-color: var(--main-color);
     margin: 5px;
     padding: 5px;
     border-radius: 20px;
@@ -241,10 +434,10 @@
     float:right;
     color:white;
     border-radius: 4px;
-    background-color: var(--main-color);
+    background-color: var(--main-color-B);
   }
   .commentSubmitBtn:hover{
-    background-color: var(--main-color-B);
+    background-color: white;
     color: #333;
   }
   .commentContainer{
@@ -254,7 +447,7 @@
   .commentContainerContainer{
     margin: 5px;
     padding: 5px;
-    background-color: var(--main-color-B);
+    background-color: var(--main-color);
     border-radius: 20px;
   }
   .commentUserImageSpace{
@@ -335,7 +528,7 @@
     font-family: Arial, Helvetica, sans-serif;
     margin-top: 20px;
     font-size: 60px;
-    font-family: 'Unlock', cursive;
+    font-family: var(--font-group-a);
   }
 
   h3 {
@@ -380,6 +573,30 @@
   height: 800px;
 }
 
+@media (max-width: 1150px) {
+  .userData{
+    width: 130px;
+    border-bottom-right-radius: 50%;
+  }
+  .userDataUserName{
+    font-size: 0pt;
+  }
+  .userDataUserRank{
+    display: none;
+  }
+}
+@media (max-width: 800px) {
+  .postHolder{
+    width:80%;
+    margin: 15px auto;
+    padding:0% 5%;
+    opacity:0.95;
+  }
+  .container {
+    margin: 40px auto;
+    float:none;
+  }
+}
 .indexButtonHolder{
   text-align:center;
   color:white;
@@ -388,11 +605,79 @@
 
 .navButton{
   background-color: grey;
-  font-family: 'unlock', cursive;
+  font-family: var(--font-group-a);
   color:white;
   font-size: 18pt;
   padding:5px;
 }
 .navButton:hover{
   background-color: darkgrey;
+}
+
+/* Profile Stuff: */
+
+.profilePost{
+  margin-left: 40%;
+}
+.profileUserData{
+  position:fixed;
+  width: 30%;
+  height:200px;
+  margin-left: 5%;
+  background-color:var(--second-color-D);
+  overflow:hidden;
+}
+.profileUserImageSpace{
+  float:left;
+  margin:10px;
+  height:150px;
+  width:150px;
+}
+.profileUserImageForm{
+  margin:0;
+}
+.profileChangeUserImage{
+  position: absolute;
+  margin: 0;
+  margin-top: -150px;
+  margin-left: -75px;
+  height:150px;
+  width:150px;
+  padding:10px;
+  border-radius:5px;
+  border:none;
+  background-color: white;
+  font-size: 10pt;
+  opacity: 0;
+  transition: all 0.2s;
+}
+.profileChangeUserImage:hover{
+  opacity: 0.4;
+}
+.profileUserDataUserName{
+  background-color:white;
+  color:#000;
+  padding:0;
+  font-size: 10pp;
+  font-family: var(--font-group-a);
+}
+@media (max-width: 800px) {
+  .postHolder{
+    width:80%;
+    margin: 15px auto;
+    padding:0% 5%;
+    opacity:0.95;
+  }
+  .profilePost{
+    margin-left: auto;
+  }
+  .profileUserData {
+    margin: 40px auto;
+    float:none;
+  }
+  .profileUserData{
+    position:fixed;
+    display: none;
+    margin: auto;
+  }
 }

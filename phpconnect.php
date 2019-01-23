@@ -1,4 +1,5 @@
 <?php
+
   function connectToDB(){
     //cridentials
     $dbName = "socialmediadb";
@@ -10,12 +11,14 @@
     }
     return $connect;
   }
+
   function formValidate($textItem){
       $noSpaceText = str_replace(' ', '~', $textItem);
       $noSpaceNoSignText = preg_replace('/[^A-Za-z0-9\-\!\?\~]/', '', $noSpaceText);
       $noSignText = str_replace('~', ' ', $noSpaceNoSignText);
       return $noSignText;
   }
+
   function timeAgo($time_ago){
     $time_ago = strtotime($time_ago);
     $cur_time   = time();
@@ -80,5 +83,94 @@
             return "$years years ago";
         }
     }
+}
+
+function getCommentsArray($postId, $conn){
+  //create the comment html code
+  $commentsArray = array();
+  $commentsObject = $conn->query("SELECT commentId FROM commenttable WHERE parentID = '$postId'");
+  while($comTabRow = $commentsObject->fetch_assoc()){
+    foreach ($comTabRow as $comkey => $comvalue) {
+      //get the data in the row for this specific comment
+      $thisCommentObject = $conn->query("SELECT * FROM commenttable WHERE commentId = '$comvalue'");
+      $thisComment = $thisCommentObject->fetch_assoc();
+      //get commenter data based on the ID in the comment table
+      $commentervalue = $thisComment["userID"];
+      $thisCommenterObject = $conn->query("SELECT * FROM usertable WHERE ID = '$commentervalue'");
+      $thisCommenter = $thisCommenterObject->fetch_assoc();
+      //populate an array with the comment data including the time elapsed since the post was made
+      $commentArray = array(
+        timeAgo($thisComment["commentDate"]),
+        $thisCommenter["userImage"],
+        $thisCommenter["Username"],
+        $thisComment["commentText"],
+      );
+      $commentsArray[] =  $commentArray;
+    }
+  }
+  return $commentsArray;
+}
+
+function getPostsArray($conn, $currentCategory, $currentUserName, $rank){
+  $posts="";
+  $postObject = $conn->query("SELECT postId FROM posttable WHERE category = '$currentCategory'");
+  while($row = $postObject->fetch_assoc()){
+    foreach($row as $key => $value){
+      //get all the post data from the row
+      $innerPostObject = $conn->query("SELECT * FROM posttable where postId = '$value'");
+      $row = $innerPostObject->fetch_assoc();
+      //use the category id gotten from post table to get the name of the category name from category table
+      $catValue = $row["category"];
+      $categoryPostObject = $conn->query("SELECT category FROM catagorytable where categoryId = '$catValue'");
+      $catName = $categoryPostObject->fetch_assoc();
+      //use the user id gotten from post table to get the name of the user name from category table
+      $userValue = $row["userId"];
+      //get the name of the user behind this post
+      $usernamePostObject = $conn->query("SELECT * FROM usertable where ID = '$userValue'");
+      $Username = $usernamePostObject->fetch_assoc();
+
+      if($Username["Username"] == $currentUserName){
+        //check to see if current post was made by user, if true add trash can
+        $canHaveTrashcan = 1;
+      } else if($rank == "Admin"){
+        //check if current user is admin, if true place trash cans on all posts
+        $canHaveTrashcan = 1;
+      } else{
+        $canHaveTrashcan = 0;
+      }
+
+      //collect variables to be used in the post creation
+      $postTimeElapsed = timeAgo($row["date"]);
+      $postUserImageURL = $Username["userImage"];
+      $postUserName = $Username["Username"];
+      $postCatagory = $catName["category"];
+      $postText = $row["text"];
+      //collect emoti variables
+      $likes = $row["likes"];
+      $hates = $row["hates"];
+      $angers = $row["angers"];
+      $deads = $row["deads"];
+      //get the comments as an array
+      $commentsArray = getCommentsArray($value, $conn);
+      //create array for emotis
+      $emotiArray = array($likes,$hates,$angers,$deads);
+      //create an array for this post
+      $postArray = array(
+        $value,
+        $postTimeElapsed,
+        $postUserImageURL,
+        $postUserName,
+        $canHaveTrashcan,
+        $postCatagory,
+        $postText,
+        $emotiArray,
+        $commentsArray,
+      );
+      //add this post's data to the posts array
+      $postsArray[] = $postArray;
+    }
+  }
+  // return array($posts, $postsArray);
+  return $postsArray;
 }
 ?>

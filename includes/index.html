@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, intial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie-edge">
+  <link href="https://fonts.googleapis.com/css?family=Raleway|Unlock" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+<style></style>
+</head>
+
+<body class="indexBody" id="body">
+
+  <header>
+    <h1>Who Says?</h1>
+    <h3>Find out what they're talking about!</h3>
+  </header>
+
+  <div class="indexMainHolder">
+    <div class="indexImageHolder"></div>
+    <div class="indexMainForm">
+
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+    <form class="loginForm" id="loginForm" method="POST">
+        <h1 class="loginTitle">Who Says?</h1>
+        <h5 class="inputTitle" styles="style="font-family: 'Unlock', cursive"">Sign in</h5>
+        <h3 class="formLabel">Name</h3>
+        <input type="text" class="loginInput" name="loginUsername" tabindex="1" required>
+        <h3 class="formLabel">Password</h3>
+        <input type="password" class="loginInput" name="loginPassword" tabindex="3" required><br>
+        <div class="indexButtonHolder">
+          <button class="loginbutton"  name="loginButton" tabindex="4">Login</button><br>
+        </div>
+    </form>
+    </div>
+    <div class="row">
+    <form class="loginForm" id="registerForm"  method="POST">
+      <h1 class="loginTitle">Who Says?</h1>
+      <h5 class="inputTitle" styles="style="font-family: 'Unlock', cursive"">Sign up</h5>
+      <h3 class="formLabel">Name</h3>
+      <input type="text" class="loginInput" name="registerUsername" tabindex="1" required>
+      <h3 class="formLabel">Email</h3>
+      <input type="email" class="loginInput" name="registerEmail" tabindex="2" required>
+      <h3 class="formLabel">Password</h3>
+      <input type="password" class="loginInput" name="registerPassword1" tabindex="3" required>
+      <h3 class="formLabel">Confirm Password</h3>
+      <input type="password" class="loginInput" name="registerPassword2" tabindex="3" required><br>
+      <div class="indexButtonHolder">
+        <button class="registerbutton" name="registerButton" tabindex="5">Register</button><br>
+      </div>
+    </form>
+    </div>
+      <div class="indexButtonHolder">
+        <a id="regToggleButton" onClick="toggleRegistration()">Register</a>
+      </div>
+      <?php echo $whatHappened; ?>
+    </form>
+  </div>
+  <script type="text/javascript" src="js/indexScripts.js"></script>
+</body>
+
+</html>
