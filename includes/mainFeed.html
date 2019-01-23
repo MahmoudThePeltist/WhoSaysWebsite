@@ -1,85 +1,46 @@
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, intial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie-edge">
-  <title>Main Feed</title>
-
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway|Unlock">
-  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="styles.css">
-
-  <script src="js/jquery-3.3.1.js"></script>
-  <!-- my scripts -->
-  <script type="text/javascript" src="js/searchScripts.js"></script>
-  <script type="text/javascript" src="js/mainFeedScripts.js"></script>
-  <script type="text/javascript" src="js/cookies.js"></script>
-  <script type="text/javascript" src="js/postScripts.js"></script>
+  <?php
+    $pageTitle = "Main Feed";
+    include "headSection.html";
+  ?>
 </head>
 
 <body id="body">
+  <div id="darkBackground" class="darkBackground"></div>
 
   <header>
-    <nav class="navbar">
-      <a class="navbar-item" href="mainFeed.php">Main Feed</a>
-      <a class="navbar-item" href="<?php echo 'profile.php?username='. $userDataUserName ?>">My Profile</a>
-      <div class="dropdown">
-        <button class="dropbtn"><i class="fa fa-caret-down"></i> Categories</button>
-        <div class="dropdown-content">
-            <a href="mainFeed.php?category=0">All</a>
-            <a href="mainFeed.php?category=1">General</a>
-            <a href="mainFeed.php?category=2">Sports</a>
-            <a href="mainFeed.php?category=3">Film/TV</a>
-            <a href="mainFeed.php?category=4">Funny</a>
-            <a href="mainFeed.php?category=5">Music</a>
-            <a href="mainFeed.php?category=6">Games</a>
-        </div>
-      </div>
-      <form class="navbar-form" method="POST">
-        <button class="navbar-item navbar-right" name="logOutBtn">
-          <i class="fas fa-power-off"></i>
-          Log Out
-        </button>
-      </form>
-      <div class="searchHolder">
-        <input type="text" class="searchInput" id="search" placeholder="Search" />
-        <div id="display"></div>
-      </div>
-    </nav>
-
-    <h1>Who Says?</h1>
-
-    <h4><?php if(isset($catName)){echo $catName['category'];} ?></h4>
+    <?php
+      $currentURL = "mainFeed.php?";
+      include "includes/navBar.html";
+    ?>
+    <h1 class="titleText">Who Says?</h1>
   </header>
 
 <div>
-  <button class="generalButton" id="postBtn" onclick="showBox()">Make a Post</button>
+  <button class="openPostBoxBtn" id="postBtn" onclick="showBox()">Make a Post</button>
 </div>
 
 <div id="makePostBox" class="makePostBox">
   <div class="makePostTitle">
-    <h3>Text Post</h3>
+    <p>Make a Post</p>
   </div>
-  <form class="makePostForm" method="POST">
-    <textarea rows="10" cols="30" class="textInput" name="postText" id="makePostInput"></textarea>
-    <br>
-    <label for="imageUpload" class="imageUploadLabel"><i class="fa fa-upload"></i>Upload an Image</label>
-    <input type="file" class="imageInput" id="imageUpload"/>
-    <select class="imageUploadLabel" name="postcategory" id="categorySelect">
-     <option value="1">General</option>
-     <option value="2">Sports</option>
-     <option value="3">Film/TV</option>
-     <option value="4">Funny</option>
-     <option value="5">Music</option>
-     <option value="6">Games</option>
-    </select>
-    <br>
-    <button class="makePostBtn" name="makePostBtn" id="makePostbtn">Post</button>
-    <?php echo $errorText; ?>
-  </form>
+  <textarea rows="10" cols="30" class="textInput" name="postText" id="makePostInput"></textarea>
+  <br>
+  <label for="imageUpload" class="imageUploadLabel">
+    <i class="fa fa-upload"></i>Upload an Image
+  </label>
+  <input type="file" class="imageInput" name="postImageInput" id="imageUpload"/>
+  <div class="search_categories">
+    <div class="select" id="selectDropdownHolder">
+      <!-- This is populated by the javascript below-->
+    </div>
+  </div>
+  <br>
+  <button class="makePostBtn" name="makePostBtn" onclick="makePost()" id="makePostbtn">
+    <i class="fas fa-plus"></i> Post
+  </button>
+  <div id="errorBox"><?php echo $errorText; ?></div>
 </div>
 
 <div class="postsHolder" id="postsHolderID">
@@ -92,6 +53,10 @@
   var dataUserID = <?php echo $userDataID;?>;
   var dataUserName = "<?php echo $userDataUserName;?>";
   var dataUserImageSrc = "<?php echo $userDataImageURL;?>";
+  //get all the categories
+  var categoryArray = JSON.parse('<?php echo getCategoryData($conn);?>');
+  //poulate the options list
+  getCategorySelect(categoryArray);
   //pass all the posts and their comments to Javascript as a JSON :
   var allPostsArray = JSON.parse('<?php echo json_encode($postsArray);?>');
   generatePosts(allPostsArray);

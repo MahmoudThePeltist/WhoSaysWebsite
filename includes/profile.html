@@ -1,54 +1,17 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, intial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie-edge">
-  <title><?php echo $profileUserName; ?>'s Profile</title>
-
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway|Unlock">
-  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="styles.css">
-
-  <script src="js/jquery-3.3.1.js"></script>
-  <!-- my scripts -->
-  <script type="text/javascript" src="js/searchScripts.js"></script>
-  <script type="text/javascript" src="js/mainFeedScripts.js"></script>
-  <script type="text/javascript" src="js/cookies.js"></script>
-  <script type="text/javascript" src="js/postScripts.js"></script>
+    <?php
+      $pageTitle = $profileUserName . "'s Profile";
+      include "headSection.html";
+    ?>
 </head>
 
 <body>
-  <nav class="navbar">
-      <a class="navbar-item" href="mainFeed.php">Main Feed</a>
-      <a class="navbar-item" href="<?php echo 'profile.php?username='. $currentUserName ?>">My Profile</a>
-      <div class="dropdown">
-        <button class="dropbtn"><i class="fa fa-caret-down"></i> Categories</button>
-        <div class="dropdown-content">
-            <a href="profile.php?username=<?php echo $profileUserName?>&category=0">All</a>
-            <a href="profile.php?username=<?php echo $profileUserName?>&category=1">General</a>
-            <a href="profile.php?username=<?php echo $profileUserName?>&category=2">Sports</a>
-            <a href="profile.php?username=<?php echo $profileUserName?>&category=3">Film/TV</a>
-            <a href="profile.php?username=<?php echo $profileUserName?>&category=4">Funny</a>
-            <a href="profile.php?username=<?php echo $profileUserName?>&category=5">Music</a>
-            <a href="profile.php?username=<?php echo $profileUserName?>&category=6">Games</a>
-        </div>
-      </div>
-      <div class="searchHolder">
-        <input type="text" class="searchInput" id="search" placeholder="Search" />
-        <div id="display"></div>
-      </div>
-      <form class="navbar-form" method="POST">
-        <button class="navbar-item navbar-right" name="logOutBtn">
-          <i class="fas fa-power-off"></i>
-          Log Out
-        </button>
-      </form>
-    </nav>
-
+  <?php
+    $currentURL = "profile.php?username=" . $profileUserName . "&";
+    include "includes/navBar.html";
+  ?>
   <div class="profileUserData">
     <div class="profileUserImageSpace">
       <img class="userImage" id="mainUserImage" name=<?php echo $userDataID; ?> src=<?php echo $userDataImageURL; ?> >
@@ -62,10 +25,37 @@
       <h3 class="profileUserDataUserName" id="userDataUserName"><?php echo $rank; ?> <?php echo $userDataUserName; ?></h3>
     </span>
     <?php if($isCurrentUsersPage){ echo '
-      <form method="POST">
-        <button class="logOutBtn" name="logOutBtn">Log Out</button>
+      <label class="profile_label" for="postThemeA">Main Theme:</label>
+      <div class="profile_theme">
+        <div class="profile_select">
+          <select name="postThemeA" id="themeSelectA">
+            <option value="0" selected="selected">Blueish</option>
+            <option value="1">Halloween</option>
+            <option value="2">Pale Pink</option>
+            <option value="3">Very Red</option>
+          </select>
+        </div>
+      </div>
+        <label class="profile_label" for="postThemeB">Secondary Theme:</label>
+        <div class="profile_theme">
+          <div class="profile_select">
+            <select name="postThemeB" id="themeSelectB">
+              <option value="0" selected="selected">Darker</option>
+              <option value="1">Lighter</option>
+            </select>
+          </div>
+        </div>
+      <form method="POST" action="phpconnect.php">
+        <button class="profile_btn" name="logOutBtn">
+          <i class="fas fa-power-off"></i>
+          Log Out
+        </button>
       </form>
-    ';}?>
+    '; } else { echo '
+    <button class="profile_btn" name="followBtn" onClick="follow()">
+      Follow
+    </button>
+  ';}?>
   </div>
 
   <div class="profilePosts" id="postsHolderID">

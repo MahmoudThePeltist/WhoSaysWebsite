@@ -1,7 +1,45 @@
 <?php
 
+if($_POST){
+  if(isset($_POST['logOutBtn'])){
+    logOut();
+  } else if(isset($_GET['trashBtn'])){
+    deletePost($_POST['postId']);
+  }
+}
+
+function logOut(){
+  //log out
+  session_start();
+  $_SESSION['userID'] = NULL;
+  header('location: index.php');
+}
+
+function getCategoryData($conn){
+  //categorys gotten from db
+  $categoryArray = array();
+  $categoriesArray = array();
+  $categoryObj = $conn->query("SELECT `categoryId`, `category` FROM `catagorytable` WHERE 1");
+  while($catRow = $categoryObj->fetch_assoc()){
+    foreach($catRow as $catKey => $catValue){
+        $categoryArray[] = $catValue;
+    }
+    $categoriesArray[] = $categoryArray;
+    $categoryArray = array();
+  }
+  //return the data as json
+  return json_encode($categoriesArray);
+}
+
+function deletePost($postId){
+  //delete post based on ID
+  $conn = connectToDB();
+  $conn->query("DELETE FROM `posttable` WHERE postId = '$postId'");
+  echo "DELETED";
+}
+
 function connectToDB(){
-    //cridentials
+    //credentials
     $dbName = "socialmediadb";
     $name = "Mahmoud";
     $password = "mahmoud1996";
@@ -158,8 +196,12 @@ function getPostsArray($conn, $currentCategory, $currentUserName, $currentUserId
       $postTimeElapsed = timeAgo($row["date"]);
       $postUserImageURL = $Username["userImage"];
       $postUserName = $Username["Username"];
-      $postCatagory = $catName["category"];
       $postText = $row["text"];
+      $postCatagory = $catName["category"];
+      //post type image or text
+      $postType = $row['postType'];
+      //post image if type contains image
+      $postImage = $row['imageURL'];
       //collect emoti variables
       $likes = $row["likes"];
       $hates = $row["hates"];
@@ -175,7 +217,7 @@ function getPostsArray($conn, $currentCategory, $currentUserName, $currentUserId
       $userAngers = $emotis["angers"];
       $userDeads = $emotis["deads"];
       //create array for userEmotis
-      $uerEmotiArray = array($userLikes,$userHates,$userAngers,$userDeads);
+      $userEmotiArray = array($userLikes,$userHates,$userAngers,$userDeads);
       //get the comments as an array
       $commentsArray = getCommentsArray($value, $conn);
       //create an array for this post
@@ -189,7 +231,9 @@ function getPostsArray($conn, $currentCategory, $currentUserName, $currentUserId
         $postText,
         $emotiArray,
         $commentsArray,
-        $uerEmotiArray,
+        $userEmotiArray,
+        $postType,
+        $postImage,
       );
       //add this post's data to the posts array
       $postsArray[] = $postArray;

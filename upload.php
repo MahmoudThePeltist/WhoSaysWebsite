@@ -22,7 +22,8 @@
      if(empty($errors)==true) {
         $date = new DateTime();
         $timeStamp = $date->getTimestamp();
-        $file_location = "userImages/". "user" . $userName . $timeStamp . "." . $file_ext;
+        $noSpaceName = str_replace(' ', '_', $userName);
+        $file_location = "userImages/". "user" . $noSpaceName . $timeStamp . "." . $file_ext;
         move_uploaded_file($file_tmp,$file_location);
         $conn->query("UPDATE usertable SET userImage = '$file_location' WHERE Username = '$userName'");
         echo "<h1>Success</h1>";

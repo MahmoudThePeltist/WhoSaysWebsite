@@ -43,12 +43,6 @@
         $postText = formValidate($postText);
         $conn->query("INSERT INTO `posttable`(`userId`,`text`, `category`) VALUES ('$userDataID','$postText','$postcategory')");
       }
-    } else if(isset($_POST['logOutBtn'])){
-      $_SESSION['userID'] = NULL;
-      header('location: index.php');
-    } else if(isset($_POST['trashBtn'])){
-      $deletedPostId = $_POST['trashBtn'];
-      $conn->query("DELETE FROM `posttable` WHERE postId = '$deletedPostId'");
     }
   }
   $getPostsFunctionReturnArray = getPostsArray($conn, $currentCategory,$currentUserName, $userDataID, $rank);

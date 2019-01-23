@@ -1,186 +1,122 @@
-  :root {
-    /* --main-color: #FF4500;
-    --main-color-B: #FF7F50;
-    --main-color-B2: #FFFF00; */
+:root {
+  --main-font-color: white;
+  --second-font-color: white;
 
-    /* --main-color: #FF4545;
-    --main-color-B: #FF7F7F;
-    --main-color-B2: #FFF0F0; */
+  /*This is where the theme variables are added by the backend*/
+  --font-group-a: 'Montserrat','unlock', cursive;
+  --font-group-b: 'Raleway', sans-serif;
+}
 
-    --main-color: #33ccad;
-    --main-color-B: #33aaad;
-    --main-color-B2: #77eeef;
+body{
+  margin:0px;
+  background-color:rgb(230, 236, 240);
+  text-align: center;
+  opacity:0.9;
+  font-family: Arial, Helvetica, sans-serif;
+  position:relative;
+}
+.indexBody{
+  background-image: url('pics/10.png');
+}
+header{
+  background-color:	var(--main-color);
+  text-align: center;
+  font-family: var(--font-group-a);
+  color:#ffffff;
+  overflow: hidden;
+  font-size: 32pt;
+  width:100%;
+  margin: auto;
+  margin-top: 0px;
+  border-bottom: 15px solid var(--main-color-B);
+}
+button {
+  background-color: var(--main-color);
+  border:0;
+  transition: all 0.5s;
+}
 
-      /* --main-color: #FF0000;
-      --main-color-B: #EE0000;
-      --main-color-B2: #DD0000; */
-
-    /* --second-color: #909090;
-    --second-color-B: #e0e0e0;
-    --second-color-D: #404040; */
-
-    --second-color: #404040;
-    --second-color-B: #707070;
-    --second-color-D: #101010;
-
-    --font-group-a: 'Montserrat','unlock', cursive;
-    --font-group-b: 'Raleway', sans-serif;
-  }
-
-  body{
-    margin:0px;
-    background-color:rgb(230, 236, 240);
-    text-align: center;
-    opacity:0.9;
-    font-family: Arial, Helvetica, sans-serif;
-    position:relative;
-  }
-  .indexBody{
-    background-image: url('pics/10.png');
-  }
-  header{
-    background-color:	var(--main-color);
-    text-align: center;
-    font-family: var(--font-group-a);
-    color:#ffffff;
-    overflow: hidden;
-    font-size: 32pt;
-    width:100%;
-    margin: auto;
-    margin-top: 0px;
-    border-bottom: 15px solid var(--main-color-B);
-  }
-  button {
-    background-color: var(--main-color);
-    border:0;
-    transition: all 0.5s;
-  }
-
-  button:hover{
-    background-color: var(--main-color);
-  }
-
-  /*User data box CSS: */
-  /* .userData{
-    position:absolute;
-    float:left;
-    width:400px;
-    height:150px;
-    background-color:var(--second-color);
-    border-bottom-right-radius: 100%;
-    overflow:hidden;
-    transition: all 0.5s;
-  }
-  .userData a{
-    color:white;
-    text-decoration: none;
-    transition: all 0.25s;
-  }
-  .userData a:hover{
-    color:white;
-    text-decoration:underline;
-  }
-  .userData:hover{
-    background-color:var(--second-color-B);
-    color:#000;
-  }
-  .headerUserImageSpace{
-    float:left;
-    margin:10px;
-    height:90px;
-    width:90px;
-  }
-  .changeUserImageForm{
-    margin:0;
-  }
-  .changeUserImage{
-    float:left;
-    margin: 0;
-    margin-top: -100px;
-    margin-left: 10px;
-    height:90px;
-    width:90px;
-    padding:10px;
-    border-radius:5px;
-    border:none;
-    background-color: white;
-    font-size: 10pt;
-    opacity: 0;
-    transition: all 0.2s;
-  }
-  .changeUserImage:hover{
-    opacity: 0.4;
-  }
-  .userDataUserName{
-    background-color:white;
-    color:#000;
-    padding:0;
-    font-size: 18pt;
-    font-family: var(--font-group-a);
-  }
-  .userDataUserRank{
-    font-size: 14pt;
-    font-family: var(--font-group-a);
-  } */
-  .emotiBtns{
-    font-family: var(--font-group-a);
-    min-width:25px;
-    color: white;
-    min-height:25px;
-    font-size:26pt;
-    background-color: var(--second-color);
-  }
-  .trashBtn{
-    font-family:Impact;
-    min-width:25px;
-    min-height:25px;
-    padding: 4px;
-    font-size:26pt;
-    float:right;
-    background-color: rgba(255, 255, 255, 0.7);
-  }
-  .generalButton{
-    font-family: var(--font-group-a);
-    font-size:22pt;
-    background-color: var(--second-color-D);
-    color: #ffffff;
-    margin-top: 15px;
-    margin: auto;
-    min-width:20%;
-    padding: 10px;
-  }
-  .emotiBtns:hover, .trashBtn:hover, .commentBtn:hover, .generalButton:hover{
+button:hover{
+  background-color: var(--main-color);
+}
+.emotiBtns{
+  font-family: var(--font-group-a);
+  background-color: transparent;
+  font-size:22pt;
+  color:white;
+  padding: 9px 10px 9px 14px;
+  margin: auto 2px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: all 0.15s;
+}
+.emotiBtns:hover{
+  border: 3px solid #ccc;
+  padding: 7px 8px 7px 12px;
+}
+.trashBtn{
+  font-family:Impact;
+  padding: 18px;
+  font-size:22pt;
+  float:right;
+  filter:opacity(0.8) invert(1%);
+  transition: all 0.25s;
+}
+.trashBtn:hover i{
+  filter:opacity(1) invert(100%);
+}
+.openPostBoxBtn{
+  font-family: var(--font-group-a);
+  background-color: var(--second-color);
+  font-size:18pt;
+  border-radius: 5px;
+  width:20%;
+  color: white;
+  margin: 10px auto -35px auto;
+  padding: 10px;
+  transition: all 0.1s;
+}
+.openPostBoxBtn:hover{
+  border-radius: 50px;
   background-color: var(--second-color-B);
-  color:black;
-  }
+}
 
-  /* post stuff:*/
-  .postHolder{
-    background-color: var(--second-color-D);
-    font-family: var(--font-group-b);
-    color:white;
-    width:50%;
-    max-width: 700px;
-    overflow:hidden;
-    opacity:0.95;
-    padding:0px 25px;
-    text-align: center;
-    margin:50px auto;
-  }
-  .categoryLabelInPost{
-    float:right;
-    background-color:var(--second-color);
-    margin-bottom:-5px;
-    padding: 5px;
-    border-radius: 15px 15px 0 0;
-    transition: all 0.5s;
-  }
-  .textInput{
-    padding:15px;
-    width: 80%;
-    height:150px;
-    font-size: 16pt;
-  }
+/* post stuff:*/
+.postHolder{
+  background-color: var(--second-color-D);
+  font-family: var(--font-group-b);
+  color:white;
+  width:50%;
+  max-width: 700px;
+  overflow:hidden;
+  opacity:0.95;
+  padding:0px 25px;
+  text-align: center;
+  margin:50px auto;
+}
+.postUserName {
+  font-family: var(--font-group-b);
+}
+.postDate {
+  font-family: var(--font-group-a);
+  font-size: 12pt;
+}
+.categoryLabelInPost{
+  float:right;
+  font-family: var(--font-group-b);
+  background-color:var(--second-color);
+  margin-bottom:0;
+  font-size: 16pt;
+  padding: 5px 10px;
+  border-radius: 15px;
+  transition: all 0.5s;
+}
+.textInput{
+  padding:15px;
+  width: 80%;
+  height:150px;
+  font-size: 16pt;
+}
 
 /* navbar stuff: *//*      NAVBAR SETTINGS        */
 .navbar {
@@ -207,6 +143,7 @@
   margin-bottom: 0;
   float:right;
 }
+
 
 /* The dropdown container */
 .dropdown {
@@ -262,19 +199,33 @@
   display: block;
 }
 
+/* The mainfeed dark background overlay */
+.darkBackground {
+  display: none;
+  background-color: black;
+  opacity: 0.75;
+  position:fixed;
+  width:100%;
+  height:100vw;
+  z-index: 1;
+}
+
 /* Style the post maker */
 .makePostBtn{
   font-family: var(--font-group-a);
-  font-size:22pt;
-  background-color: var(--main-color);
-  color: #ffffff;
+  background-color: transparent;
+  font-size:16pt;
+  color: var(--main-font-color);
+  padding: 10px 8px 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   margin: 15px auto;
   min-width:20%;
   padding: 4px;
 }
 .makePostBtn:hover{
-background-color: var(--main-color-B);
-color:black;
+  background-color: var(--main-color);
+  color:black;
 }
 .makePostBox {
   display: none;
@@ -283,15 +234,19 @@ color:black;
   background-color: var(--second-color-D);
   font-family: var(--font-group-b);
   color:white;
-  width:50%;
-  max-width: 700px;
   overflow:hidden;
   text-align: center;
-  margin:15px auto;
+  /* For the popup to be over the dark overlay */
+  width:50%;
+  position:fixed;
+  left:50%;
+  margin-top: -15%;
+  margin-left: -25%;
+  z-index: 2;
 }
 .makePostTitle {
   background-color: var(--main-color);
-  padding: 2px;
+  font-size: 18pt;
   margin-bottom: 10px;
 }
 .makePostForm{
@@ -299,26 +254,71 @@ color:black;
   margin:0px;
 }
 .imageUploadLabel {
-    font-size: 18pt;
-    background-color: var(--main-color);
-    font-family: var(--font-group-b);
-    color:white;
-    padding: 6px;
-    transition: all 0.25s;
-    border:none;
+  font-size: 16pt;
+  font-family: var(--font-group-b);
+  display:inline-block;
+  color:white;
+  padding: 10px 8px 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: all 0.25s;
+}
+.imageUploadLabel:hover {
+  background-color: var(--main-color);
+  color: black;
+}
+.search_categories{
+  font-size: 16pt;
+  padding: 12px 10px 10px 14px;
+  display:inline-block;
+  width: 30%;
+  top:16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.15s;
+}
+.search_categories .select{
+  background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 96% 0;
+}
+.search_categories .select select{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+  font-family: var(--font-group-b);
+  color:white;
+  background: transparent;
+  line-height: 1;
+  border: 0;
+  padding: 0;
+  border-radius: 0;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+  font-size: 1em;
+}
+.search_categories:hover{
+  background-color: var(--main-color);
 }
 
-.imageUploadLabel:hover {
-    background-color: var(--main-color-B);
-    color: black;
+.search_categories:hover .select select{
+  color: black;
+}
+.postBoxErrorText{
+  font-family: var(--font-group-b);
+  font-size: 18pt;
+  color: white;
 }
 .imageInput{
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
 
 /* Fade in tabs */
@@ -359,225 +359,248 @@ color:black;
   color: black;
 }
 .searchListItem{
- transition: all 0.5s;
- padding:5px 3px;
+  transition: all 0.5s;
+  padding:5px 3px;
 }
 .searchListItem:hover{
- cursor: pointer;
- background-color: darkgrey;
- color: white;
+  cursor: pointer;
+  background-color: darkgrey;
+  color: white;
 }
-  /*Post stuff:*/
-  .postTitle{
-    text-align: left;
-    padding: 2px 10px;
-    background-color: var(--main-color);
-    border-bottom: 10px solid var(--second-color);
-    font-size: 12pt;
-    transition: all 0.5s;
-    overflow: hidden;
-  }
-  .postTitle:hover{
-    border-bottom: 10px solid var(--second-color-B);
-  }
-  .postTitle:hover .categoryLabelInPost {
-    background-color: var(--second-color-B);
-  }
-  .postTitle a{
-    color:white;
-    text-decoration: none;
-  }
-  .postTitle a:hover{
-    text-decoration: underline;
-  }
-  .postText{
-    text-align: left;
-    font-family: var(--font-group-b);
-    font-size: 22pt;
-  }
-  .postOpenBtn{
-    text-align:center;
-  }
-  .postUserImageSpace{
-    float:left;
-    margin:10px;
-    height:100px;
-    width:100px;
-  }
-  .userImage{
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-  }
-  .postImage{
-    width:100%;
-  }
+/*Post stuff:*/
+.postTitle{
+  text-align: left;
+  padding: 2px 10px;
+  background-color: var(--main-color);
+  border-bottom: 10px solid var(--main-color-B);
+  font-size: 12pt;
+  transition: all 0.5s;
+  overflow: hidden;
+}
+.postTitle:hover .categoryLabelInPost {
+  background-color: var(--second-color-B);
+}
+.postTitle a{
+  color:white;
+  text-decoration: none;
+}
+.postTitle a:hover{
+  text-decoration: underline;
+}
+.postText{
+  text-align: left;
+  font-family: var(--font-group-b);
+  font-size: 18pt;
+}
+.postOpenBtn{
+  text-align:center;
+}
+.postUserImageSpace{
+  float:left;
+  margin:10px;
+  height:100px;
+  width:100px;
+}
+.userImage{
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+.postImage{
+  width:60%;
+  margin: 2%;
+  margin-left: 20%;
+  transition: all 0.25s;
+}
+.postImage:active{
+  width:100%;
+  margin-left: 0%;
+}
 
-  /*Comment section: */
+/*Comment section: */
 
-  .commentBtn{
-    font-family:Impact;
-    min-width:25px;
-    min-height:25px;
-    font-size:29pt;
-    margin-bottom: 5px;
-    float:right;
-    background-color: #aaa;
-  }
-  .commentsSection{
-    background-color: var(--second-color-D);
-    margin: 5px;
-    padding: 5px;
-    display: 'block';
-  }
-  .commentsCreation{
-    background-color: var(--main-color);
-    margin: 5px;
-    padding: 5px;
-    border-radius: 20px;
-  }
-  .commentInput{
-    width: 70%;
-    font-size:22pt;
-    margin:5px;
-    padding:5px;
-    border: none;
-    border-radius: 4px;
-  }
-  .commentSubmitBtn{
-    font-size:22pt;
-    margin:5px;
-    padding:5px;
-    float:right;
-    color:white;
-    border-radius: 4px;
-    background-color: var(--main-color-B);
-  }
-  .commentSubmitBtn:hover{
-    background-color: white;
-    color: #333;
-  }
-  .commentContainer{
-    margin: 5px;
-    padding: 5px;
-  }
-  .commentContainerContainer{
-    margin: 5px;
-    padding: 5px;
-    background-color: var(--main-color);
-    border-radius: 20px;
-  }
-  .commentUserImageSpace{
-    float:left;
-    margin:5px;
-    height:70px;
-    width:70px;
-  }
-  .commentUserImage{
-    border-radius: 100%;
-  }
-  .commentUserName{
-    display: inline-block;
-    float: left;
-    font-size: 18pt;
-    margin: 0;
-    margin-left: 15px;
-    margin-bottom: -15px;
-  }
-  .commentDate{
-    text-align: right;
-    font-size: 18pt;
-    margin: 0;
-    margin-right: 15px;
-    margin-bottom: -15px;
-  }
-  .commentText{
-    text-align: left;
-    font-size: 22pt;
-  }
-  /*Other stuff: */
+.commentBtn{
+  background-color: transparent;
+  font-family:Impact;
+  font-size:29pt;
+  margin-top: -70px;
+  float:right;
+  color: white;
+  transition: all 0.15s;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.commentBtn:hover, .profile_btn:hover, .profile_theme:hover{
+  background-color: transparent;
+  border: 3px solid #ccc;
+  padding: 6px;
+}
+.commentsSection{
+  background-color: var(--second-color-D);
+  margin: 5px;
+  padding: 5px;
+  display: 'block';
+}
+.commentsCreation{
+  font-size:18pt;
+  color:white;
+  padding: 10px 8px 10px 14px;
+  margin: auto 2px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.commentInput{
+  width: 70%;
+  font-size:18pt;
+  padding: 10px 8px 10px 14px;
+  margin: auto 2px;
+  border: none;
+  border-radius: 6px;
+}
+.commentSubmitBtn{
+  font-size:18pt;
+  background-color: transparent;
+  width: 25%;
+  color:white;
+  padding: 10px 8px 10px 14px;
+  margin: auto 2px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.commentSubmitBtn:hover{
+  background-color: var(--main-color);
+  color: black;
+}
+.commentContainer{
+  margin: 5px;
+  padding: 5px;
+}
+.commentContainerContainer{
+  background-color: var(--main-color);
+  color:white;
+  padding: 10px 8px 10px 14px;
+  margin: auto 2px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.commentUserImageSpace{
+  float:left;
+  margin:5px;
+  height:70px;
+  width:70px;
+}
+.commentUserImage{
+  border-radius: 100%;
+}
+.commentUserName{
+  display: inline-block;
+  float: left;
+  font-size: 18pt;
+  margin: 0;
+  margin-left: 15px;
+  margin-bottom: -15px;
+}
+.commentDate{
+  text-align: right;
+  font-size: 16pt;
+  margin: 0;
+  margin-right: 15px;
+  margin-bottom: -15px;
+}
+.commentText{
+  text-align: left;
+  font-size: 18pt;
+}
+/*Other stuff: */
 
-  .buttonHolder{
-    margin: 0px auto;
-    text-align: center;
-  }
+.buttonHolder{
+  width:60%;
+  margin: 2%;
+  margin-left: 20%;
+  text-align: center;
+}
 
-  /* style inputs and link buttons */
+/* style inputs and link buttons */
 
-  .loginInput {
-    width: 70%;
-    padding: 12px;
-    border: none;
-    border-radius: 4px;
-    opacity: 0.85;
-    display: inline-block;
-    font-size: 17px;
-    line-height: 20px;
-    margin: 5px 20px;
-  }
+.loginInput {
+  width: 70%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  opacity: 0.85;
+  display: inline-block;
+  font-size: 17px;
+  line-height: 20px;
+  margin: 5px 20px;
+}
 
-  .loginbutton{
+.loginbutton{
   width: 20%;
   font-size: 17px;
   padding: 14px 20px;
   margin: 8px 0;
   background-color: var(--main-color);
   color:white;
-  }
+}
 
-  .registerbutton{
-    min-width: 20%;
-    font-size: 17px;
-    padding: 14px 20px;
-    margin: 8px 0;
-    background-color: var(--main-color);
-    color:white;
-  }
+.registerbutton{
+  min-width: 20%;
+  font-size: 17px;
+  padding: 14px 20px;
+  margin: 8px 0;
+  background-color: var(--main-color);
+  color:white;
+}
 
-  input:hover,
-  .btn:hover {
-    opacity: 1;
-  }
+input:hover,
+.btn:hover {
+  opacity: 1;
+}
 
-  .loginTitle{
-    text-align:center;
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    margin-top: 20px;
-    font-size: 60px;
-    font-family: var(--font-group-a);
-  }
+.loginTitle{
+  text-align:center;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-top: 20px;
+  font-size: 60px;
+  font-family: var(--font-group-a);
+}
 
-  h3 {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 25px;
-    color: #ffffff;
-  }
-  .formLabel {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 25px;
-    color: #ffffff;
-  }
+.titleText {
+  color: var(--main-font-color)
+}
 
-  a.button {
-    -webkit-appearance: button;
-    -moz-appearance: button;
-    appearance: button;
-    text-decoration: none;
-    color: initial;
-  }
+.subtitleText {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25px;
+  color: var(--main-font-color);
+}
+.formLabel {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25px;
+  color: var(--second-font-color);
+}
 
-  h5{
-    font-size: 25px;
-    color:var(--main-color);
-    text-align: center;
-  }
-  #loginForm{
-    display: block;
-  }
-  #registerForm{
-    display: none;
-  }
+a.button {
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+  text-decoration: none;
+  color: initial;
+}
+
+h5{
+  font-size: 25px;
+  color:var(--main-color);
+  text-align: center;
+}
+#loginForm{
+  display: block;
+}
+#registerForm{
+  display: none;
+}
 
 .container {
   position: left;
@@ -641,12 +664,12 @@ color:black;
 .profileUserData{
   position:fixed;
   width: 30%;
-  height:13vw;
   margin-top: 3.7%;
   margin-left: 5%;
   background-color:var(--second-color-D);
   overflow:hidden;
 }
+
 .profileUserImageSpace{
   float:left;
   margin:1vw;
@@ -674,26 +697,64 @@ color:black;
 .profileChangeUserImage:hover{
   opacity: 0.4;
 }
-.logOutBtn{
-  float:left;
-  margin: -0.75vw 0 1vw 1vw;
-  background-color:white;
-  color:black;
-  width:7vw;
-  font-size: 1vw;
-  padding:0.3vw
+.profile_btn{
+  font-family: var(--font-group-a);
+  font-size: 1.25vw;
+  color: var(--main-font-color);
+  background-color: transparent;
+  width:11vw;
+  margin: 5px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   transition: all 0.1s;
 }
-.logOutBtn:hover{
-  background-color: var(--second-color);
-  color:white;
+.profile_label{
+  font-size: 1.25vw;
+  font-family: var(--font-group-a);
+  color: var(--second-font-color);
+}
+.profile_theme{
+  width:10vw;
+  margin: auto;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: all 0.15s;
+}
+.profile_theme .profile_select{
+  background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 95% 50%;
+}
+
+.profile_theme .profile_select select{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+  text-align: center;
+  font-family: var(--font-group-a);
+  color: var(--second-font-color);
+  background: transparent;
+  line-height: 1;
+  border: 0;
+  padding: 0;
+  border-radius: 0;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+  font-size: 1.25vw;
+}
+.profile_theme:hover .profile_select select{
+  color: var(second-font-color);
 }
 .profileUserDataUserName{
-  background-color:white;
-  color:#000;
-  font-size: 1.35vw;
+  font-family: var(--font-group-b);
+  font-size: 1.45vw;
+  background-color:var(--main-color);
+  color: var(--main-font-color);
   padding:0;
-  font-family: var(--font-group-a);
 }
 @media (max-width: 800px) {
   .postHolder{

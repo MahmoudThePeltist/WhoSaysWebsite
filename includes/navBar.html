@@ -1,0 +1,25 @@
+  <nav class="navbar">
+    <a class="navbar-item" href="mainFeed.php">Main Feed</a>
+    <a class="navbar-item" href="<?php echo 'profile.php?username='. $userDataUserName ?>">My Profile</a>
+    <div class="dropdown">
+      <button class="dropbtn"><i class="fa fa-caret-down"></i> Categories</button>
+      <div class="dropdown-content" id="dropDownHolder">
+        <!--get the catagories from the server-->
+        <script>
+          //get all the categories as a JSON from the backend
+          var categoriesArray = JSON.parse('<?php echo getCategoryData($conn);?>');
+          getCategoryDropdown("<?php echo $currentURL;?>",categoriesArray);
+        </script>
+      </div>
+    </div>
+    <form class="navbar-form" method="POST" action="phpconnect.php">
+      <button class="navbar-item navbar-right" name="logOutBtn">
+        <i class="fas fa-power-off"></i>
+        Log Out
+      </button>
+    </form>
+    <div class="searchHolder">
+      <input type="text" class="searchInput" id="search" placeholder="Search" />
+      <div id="display"></div>
+    </div>
+  </nav>

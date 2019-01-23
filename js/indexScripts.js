@@ -1,21 +1,20 @@
+function toggleRegistration(){
+  registerForm = document.getElementById('registerForm');
+  loginForm = document.getElementById('loginForm');
+  regToggleButton = document.getElementById('regToggleButton');
 
-  var regToggleFlag = 0;
-  function toggleRegistration(){
-    if(regToggleFlag == 1){
-      document.getElementById('registerForm').style.display = 'none';
-      document.getElementById('loginForm').style.display = 'block';
-      document.getElementById('regToggleButton').innerHTML = 'Register';
-      regToggleFlag = 0;
-    } else {
-      document.getElementById('loginForm').style.display = 'none';
-      document.getElementById('registerForm').style.display = 'block';
-      document.getElementById('regToggleButton').innerHTML = 'Sign In';
-      regToggleFlag = 1;
-    }
+  if(registerForm.style.display == 'block'){
+    registerForm.style.display = 'none';
+    loginForm.style.display = 'block';
+    regToggleButton.innerHTML = 'Register';
+  } else {
+    registerForm.style.display = 'block';
+    loginForm.style.display = 'none';
+    regToggleButton.innerHTML = 'Sign In';
   }
-  function closeRegistration(){
-  }
-  function goToFeed(){
-    var url = "mainFeed.php";
-    window.open(url,'_self');
-  }
+}
+
+function goToFeed(){
+  var url = "mainFeed.php";
+  window.open(url,'_self');
+}
