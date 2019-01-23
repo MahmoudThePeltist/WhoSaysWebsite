@@ -1,5 +1,8 @@
 <?php
   include 'phpconnect.php';
+  //connect to DB
+  $conn = connectToDB();
+
   session_start();
   $posts = "";
   $newPost = "";
@@ -20,14 +23,12 @@
   } else {
     $currentUserName = $_SESSION['userID'];
   }
-  //connect to DB
-  $conn = connectToDB();
   //get the data of the currently logged in user.
   $currentUserPostObject = $conn->query("SELECT * FROM usertable where Username = '$currentUserName'");
   $currentUserArray = $currentUserPostObject->fetch_assoc();
   //rank of user
   if($currentUserArray["Premissions"]){$rank = "Admin";}else{$rank = "User";}
-  //variables to be used in the mainFeed template's userdata area:
+  //variables for the currently signed in user
   $userDataID = $currentUserArray["ID"];
   $userDataImageURL = $currentUserArray["userImage"];
   $userDataUserName = $currentUserArray["Username"];
@@ -39,11 +40,8 @@
         $errorText = "please enter some text";
       }else{
         $postcategory = $_POST['postcategory'];
-        $userIdObject = $conn->query("SELECT ID FROM usertable WHERE Username = '$currentUserName'");
-        $userIdArray = $userIdObject->fetch_assoc();
-        $userId = $userIdArray["ID"];
         $postText = formValidate($postText);
-        $conn->query("INSERT INTO `posttable`(`userId`,`text`, `category`) VALUES ('$userId','$postText','$postcategory')");
+        $conn->query("INSERT INTO `posttable`(`userId`,`text`, `category`) VALUES ('$userDataID','$postText','$postcategory')");
       }
     } else if(isset($_POST['logOutBtn'])){
       $_SESSION['userID'] = NULL;
@@ -53,7 +51,12 @@
       $conn->query("DELETE FROM `posttable` WHERE postId = '$deletedPostId'");
     }
   }
-  $getPostsFunctionReturnArray = getPostsArray($conn, $currentCategory,$currentUserName, $rank);
+  $getPostsFunctionReturnArray = getPostsArray($conn, $currentCategory,$currentUserName, $userDataID, $rank);
   $postsArray = $getPostsFunctionReturnArray;
+  // //testing data
+  // foreach($postsArray as $key => $value){
+  //   print_r($value);
+  //   echo "<br><br>";
+  // }
   include "includes/mainFeed.html";
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-  function connectToDB(){
+function connectToDB(){
     //cridentials
     $dbName = "socialmediadb";
     $name = "Mahmoud";
@@ -12,14 +12,16 @@
     return $connect;
   }
 
-  function formValidate($textItem){
+function formValidate($textItem){
       $noSpaceText = str_replace(' ', '~', $textItem);
-      $noSpaceNoSignText = preg_replace('/[^A-Za-z0-9\-\!\?\~]/', '', $noSpaceText);
+      $noBracketTextR = str_replace(')', '\)', $noSpaceText);
+      $noBracketTextL = str_replace('(', '\(', $noBracketTextR);
+      $noSpaceNoSignText = preg_replace('/[^A-Za-z0-9\-\!\?\~\(\)]/', '', $noBracketTextL);
       $noSignText = str_replace('~', ' ', $noSpaceNoSignText);
       return $noSignText;
   }
 
-  function timeAgo($time_ago){
+function timeAgo($time_ago){
     $time_ago = strtotime($time_ago);
     $cur_time   = time();
     $time_elapsed   = $cur_time - $time_ago;
@@ -83,7 +85,7 @@
             return "$years years ago";
         }
     }
-}
+  }
 
 function getCommentsArray($postId, $conn){
   //create the comment html code
@@ -111,9 +113,22 @@ function getCommentsArray($postId, $conn){
   return $commentsArray;
 }
 
-function getPostsArray($conn, $currentCategory, $currentUserName, $rank){
-  $posts="";
-  $postObject = $conn->query("SELECT postId FROM posttable WHERE category = '$currentCategory'");
+function getPostsArray($conn, $currentCategory, $currentUserName, $currentUserId, $currentUserRank, $specificUserID = 0){
+  $postsArray = [];
+  //guery to get the ids of all the wanted posts
+  $postGetQuery = "SELECT postId FROM posttable";
+  if($currentCategory == 0){//if category is "all" select all the data
+    $postGetQuery .= "";
+    if ($specificUserID > 0){//if a specific user is selected
+     $postGetQuery .= " WHERE userId = '$specificUserID'";
+   }
+  } else {
+    $postGetQuery .= " WHERE category = '$currentCategory'";
+    if ($specificUserID > 0){//if a specific user is selected
+     $postGetQuery .= " AND userId = '$specificUserID'";
+   }
+  }
+  $postObject = $conn->query($postGetQuery);
   while($row = $postObject->fetch_assoc()){
     foreach($row as $key => $value){
       //get all the post data from the row
@@ -132,7 +147,7 @@ function getPostsArray($conn, $currentCategory, $currentUserName, $rank){
       if($Username["Username"] == $currentUserName){
         //check to see if current post was made by user, if true add trash can
         $canHaveTrashcan = 1;
-      } else if($rank == "Admin"){
+      } else if($currentUserRank == "Admin"){
         //check if current user is admin, if true place trash cans on all posts
         $canHaveTrashcan = 1;
       } else{
@@ -150,10 +165,19 @@ function getPostsArray($conn, $currentCategory, $currentUserName, $rank){
       $hates = $row["hates"];
       $angers = $row["angers"];
       $deads = $row["deads"];
-      //get the comments as an array
-      $commentsArray = getCommentsArray($value, $conn);
       //create array for emotis
       $emotiArray = array($likes,$hates,$angers,$deads);
+      //get if user has emotis from emotisTable
+      $emotisObject = $conn->query("SELECT * FROM `emotitable` WHERE `userId`= '$currentUserId' AND `postId` = '$value'");
+      $emotis = $emotisObject->fetch_assoc();
+      $userLikes = $emotis["likes"];
+      $userHates = $emotis["hates"];
+      $userAngers = $emotis["angers"];
+      $userDeads = $emotis["deads"];
+      //create array for userEmotis
+      $uerEmotiArray = array($userLikes,$userHates,$userAngers,$userDeads);
+      //get the comments as an array
+      $commentsArray = getCommentsArray($value, $conn);
       //create an array for this post
       $postArray = array(
         $value,
@@ -165,12 +189,18 @@ function getPostsArray($conn, $currentCategory, $currentUserName, $rank){
         $postText,
         $emotiArray,
         $commentsArray,
+        $uerEmotiArray,
       );
       //add this post's data to the posts array
       $postsArray[] = $postArray;
     }
   }
-  // return array($posts, $postsArray);
-  return $postsArray;
+  if ($postsArray){
+    return $postsArray;
+  } else {
+    $postsArray = "";
+    return $postsArray;
+  }
 }
+
 ?>

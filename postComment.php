@@ -7,7 +7,8 @@
     $postIdCom = $_POST['postIdCom'];
     $userIdCom = $_POST['userIdCom'];
     $commentText = $_POST['commentText'];
+    $insertedComment = formValidate($commentText);
     //update table with new comment
-    $conn->query("INSERT INTO `commenttable`(`parentID`, `userID`, `commentText`) VALUES ('$postIdCom','$userIdCom','$commentText')");
+    $conn->query("INSERT INTO `commenttable`(`parentID`, `userID`, `commentText`) VALUES ('$postIdCom','$userIdCom','$insertedComment')");
   }
 ?>

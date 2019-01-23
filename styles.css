@@ -61,7 +61,7 @@
   }
 
   /*User data box CSS: */
-  .userData{
+  /* .userData{
     position:absolute;
     float:left;
     width:400px;
@@ -111,19 +111,6 @@
   .changeUserImage:hover{
     opacity: 0.4;
   }
-  .logOutBtn{
-    float:left;
-    margin: -7px 0 15px 10px;
-    background-color:white;
-    color:black;
-    width:90px;
-    font-size: 14pt;
-    padding:5px;
-  }
-  .logOutBtn:hover{
-    background-color: var(--second-color);
-    color:white;
-  }
   .userDataUserName{
     background-color:white;
     color:#000;
@@ -134,7 +121,7 @@
   .userDataUserRank{
     font-size: 14pt;
     font-family: var(--font-group-a);
-  }
+  } */
   .emotiBtns{
     font-family: var(--font-group-a);
     min-width:25px;
@@ -167,15 +154,7 @@
   color:black;
   }
 
-  .categorySelect{
-    font-family: var(--font-group-b);
-    font-size: 18pt;
-    margin: 10px;
-  }
-  /* Make post stuff:*/
-  .makePostBtn{
-    font-size:26pt;
-  }
+  /* post stuff:*/
   .postHolder{
     background-color: var(--second-color-D);
     font-family: var(--font-group-b);
@@ -195,12 +174,6 @@
     padding: 5px;
     border-radius: 15px 15px 0 0;
     transition: all 0.5s;
-  }
-  #makePostBox{
-    padding: 15px;
-    display:none;
-    opacity:0;
-    transition:all 0.5s;
   }
   .textInput{
     padding:15px;
@@ -224,14 +197,15 @@
   text-decoration: none;
   transition: all 0.25s;
 }
-.navbar-right {
-  font-family: var(--font-group-a);
-  float:right;
-}
 .navbar-item:hover {
   color:black;
   background-color: var(--main-color-B2);
   cursor: pointer;
+}
+.navbar-form{
+  display:inline-block;
+  margin-bottom: 0;
+  float:right;
 }
 
 /* The dropdown container */
@@ -288,20 +262,63 @@
   display: block;
 }
 
-/* Style the tab content */
-.tabcontent {
+/* Style the post maker */
+.makePostBtn{
+  font-family: var(--font-group-a);
+  font-size:22pt;
+  background-color: var(--main-color);
+  color: #ffffff;
+  margin: 15px auto;
+  min-width:20%;
+  padding: 4px;
+}
+.makePostBtn:hover{
+background-color: var(--main-color-B);
+color:black;
+}
+.makePostBox {
   display: none;
   -webkit-animation: fadeEffect 1s;
   animation: fadeEffect 1s;
-    background-color: var(--second-color-D);
+  background-color: var(--second-color-D);
+  font-family: var(--font-group-b);
+  color:white;
+  width:50%;
+  max-width: 700px;
+  overflow:hidden;
+  text-align: center;
+  margin:15px auto;
+}
+.makePostTitle {
+  background-color: var(--main-color);
+  padding: 2px;
+  margin-bottom: 10px;
+}
+.makePostForm{
+  padding: 0px;
+  margin:0px;
+}
+.imageUploadLabel {
+    font-size: 18pt;
+    background-color: var(--main-color);
     font-family: var(--font-group-b);
     color:white;
-    width:50%;
-    max-width: 700px;
-    overflow:hidden;
-    text-align: center;
-    padding:0px 25px;
-    margin:50px auto;
+    padding: 6px;
+    transition: all 0.25s;
+    border:none;
+}
+
+.imageUploadLabel:hover {
+    background-color: var(--main-color-B);
+    color: black;
+}
+.imageInput{
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
 }
 
 /* Fade in tabs */
@@ -316,8 +333,8 @@
 }
 /*Search bar css*/
 .searchHolder{
-  float:right;
-  margin: -36px 12 0 auto;
+  display:inline-block;
+  margin-top: 5px;
   width: 20%;
   font-family: var(--font-group-a);
   font-size: 18pt;
@@ -616,22 +633,25 @@
 
 /* Profile Stuff: */
 
-.profilePost{
-  margin-left: 40%;
+.profilePosts{
+  margin-left: 20%;
+  margin-right: 0;
+  margin-top: 0;
 }
 .profileUserData{
   position:fixed;
   width: 30%;
-  height:200px;
+  height:13vw;
+  margin-top: 3.7%;
   margin-left: 5%;
   background-color:var(--second-color-D);
   overflow:hidden;
 }
 .profileUserImageSpace{
   float:left;
-  margin:10px;
-  height:150px;
-  width:150px;
+  margin:1vw;
+  height:10vw;
+  width:10vw;
 }
 .profileUserImageForm{
   margin:0;
@@ -639,12 +659,12 @@
 .profileChangeUserImage{
   position: absolute;
   margin: 0;
-  margin-top: -150px;
-  margin-left: -75px;
-  height:150px;
-  width:150px;
-  padding:10px;
-  border-radius:5px;
+  margin-top: -10vw;
+  margin-left: -5vw;
+  height:10vw;
+  width:10vw;
+  padding:1vw;
+  border-radius:0.5vw;
   border:none;
   background-color: white;
   font-size: 10pt;
@@ -654,11 +674,25 @@
 .profileChangeUserImage:hover{
   opacity: 0.4;
 }
+.logOutBtn{
+  float:left;
+  margin: -0.75vw 0 1vw 1vw;
+  background-color:white;
+  color:black;
+  width:7vw;
+  font-size: 1vw;
+  padding:0.3vw
+  transition: all 0.1s;
+}
+.logOutBtn:hover{
+  background-color: var(--second-color);
+  color:white;
+}
 .profileUserDataUserName{
   background-color:white;
   color:#000;
+  font-size: 1.35vw;
   padding:0;
-  font-size: 10pp;
   font-family: var(--font-group-a);
 }
 @media (max-width: 800px) {

@@ -4,16 +4,51 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, intial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie-edge">
+  <title><?php echo $profileUserName; ?>'s Profile</title>
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway|Unlock">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="styles.css">
 
   <script src="js/jquery-3.3.1.js"></script>
+  <!-- my scripts -->
   <script type="text/javascript" src="js/searchScripts.js"></script>
+  <script type="text/javascript" src="js/mainFeedScripts.js"></script>
+  <script type="text/javascript" src="js/cookies.js"></script>
+  <script type="text/javascript" src="js/postScripts.js"></script>
 </head>
- 
+
 <body>
+  <nav class="navbar">
+      <a class="navbar-item" href="mainFeed.php">Main Feed</a>
+      <a class="navbar-item" href="<?php echo 'profile.php?username='. $currentUserName ?>">My Profile</a>
+      <div class="dropdown">
+        <button class="dropbtn"><i class="fa fa-caret-down"></i> Categories</button>
+        <div class="dropdown-content">
+            <a href="profile.php?username=<?php echo $profileUserName?>&category=0">All</a>
+            <a href="profile.php?username=<?php echo $profileUserName?>&category=1">General</a>
+            <a href="profile.php?username=<?php echo $profileUserName?>&category=2">Sports</a>
+            <a href="profile.php?username=<?php echo $profileUserName?>&category=3">Film/TV</a>
+            <a href="profile.php?username=<?php echo $profileUserName?>&category=4">Funny</a>
+            <a href="profile.php?username=<?php echo $profileUserName?>&category=5">Music</a>
+            <a href="profile.php?username=<?php echo $profileUserName?>&category=6">Games</a>
+        </div>
+      </div>
+      <div class="searchHolder">
+        <input type="text" class="searchInput" id="search" placeholder="Search" />
+        <div id="display"></div>
+      </div>
+      <form class="navbar-form" method="POST">
+        <button class="navbar-item navbar-right" name="logOutBtn">
+          <i class="fas fa-power-off"></i>
+          Log Out
+        </button>
+      </form>
+    </nav>
+
   <div class="profileUserData">
     <div class="profileUserImageSpace">
       <img class="userImage" id="mainUserImage" name=<?php echo $userDataID; ?> src=<?php echo $userDataImageURL; ?> >
@@ -32,10 +67,21 @@
       </form>
     ';}?>
   </div>
-  <div class="profilePosts">
-    <?php echo $posts; ?>
+
+  <div class="profilePosts" id="postsHolderID">
+    <!-- This is where the posts are created by the Javascript -->
   </div>
-  <script type="text/javascript" src="js/postScripts.js"></script>
+
+  <script>
+    //these variables are the current users data and are passed from the php...
+    //...to the javascript to be utilized when the user attempts to make a comment
+    var dataUserID = <?php echo $userDataID;?>;
+    var dataUserName = "<?php echo $userDataUserName;?>";
+    var dataUserImageSrc = "<?php echo $userDataImageURL;?>";
+    //pass all the posts and their comments to Javascript as a JSON :
+    var allPostsArray = JSON.parse('<?php echo json_encode($postsArray);?>');
+    generatePosts(allPostsArray);
+  </script>
 </body>
 
 </html>
