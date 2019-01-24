@@ -22,6 +22,13 @@
   } else {
     $isCurrentUsersPage = False;
   }
+  //theme variables:
+  if(!isset($_SESSION['primaryTheme'])){
+    $_SESSION['primaryTheme'] = 0;
+  } if (!isset($_SESSION['secondaryTheme'])){
+    $_SESSION['secondaryTheme'] = 0;
+  }
+  //connect to db
   $conn = connectToDB();
   $currentUserObject = $conn->query("SELECT * FROM usertable WHERE Username = '$profileUserName'");
   $currentUserArray = $currentUserObject->fetch_assoc();

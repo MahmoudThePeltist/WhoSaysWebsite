@@ -1,21 +1,21 @@
-function showBox(){
-  document.getElementById('makePostBox').style.display = 'block';
+function showBox(boxId,backgroundId){
+  document.getElementById(boxId).style.display = 'block';
   for (var i=0; i<100;i++){
-    setTimeout(function(){document.getElementById('makePostBox').style.opacity = i/100},100);
-    document.getElementById('darkBackground').style.display = 'block';
-    document.getElementById('darkBackground').addEventListener("click", hideBox);
+    setTimeout(function(){document.getElementById(boxId).style.opacity = i/100},100);
+    document.getElementById(backgroundId).style.display = 'block';
+    document.getElementById(backgroundId).addEventListener("click", function(){hideBox(boxId,backgroundId);});
   }
 }
 
-function hideBox(){
-    document.getElementById('makePostBox').style.display = 'none';
-    document.getElementById('makePostBox').style.opacity = 0;
-    document.getElementById('darkBackground').style.display = 'none';
+function hideBox(boxId,backgroundId){
+    document.getElementById(boxId).style.display = 'none';
+    document.getElementById(boxId).style.opacity = 0;
+    document.getElementById(backgroundId).style.display = 'none';
     inputActive = false;
 }
 
 function toggleComments(e){
-  commentsBtnId = e.target.value;
+  commentsBtnId = e.currentTarget.value;
   commentsId = "commentsSect" + commentsBtnId;
   commentsDisplay = document.getElementById(commentsId).style.display;
   if(commentsDisplay == 'none'){
@@ -23,6 +23,27 @@ function toggleComments(e){
   } else {
     document.getElementById(commentsId).style.display = 'none';
   }
+}
+
+function setTheme(){
+  var themeA = document.getElementById('themeSelectA').value;
+  var themeB = document.getElementById('themeSelectB').value;
+  $.ajax({
+    url:'phpconnect.php',
+    type:'post',
+    data:{
+      themeA: themeA,
+      themeB: themeB,
+      setTheme: 1,
+    },
+    success: function(rep){
+      console.log("Theme changed. reply: " + rep);
+      document.getElementById("page_theme").innerHTML = rep;
+    },
+    error: function(rep){
+      console.log("Theme change error.");
+    },
+  });
 }
 
 function submitComment(e){
@@ -367,15 +388,17 @@ function imageReaction(e){
 }
 
 function deletePost(e){
-  var postId = e.target.value;
+  var postId = e.currentTarget.value;
+  var postBoxId = "postHolder" + e.currentTarget.value;
   $.ajax({
-    url:'phpconnect.php?trashBtn=1',
+    url:'phpconnect.php',
     type:'post',
     data:{
       postId:postId,
+      trashBtn:1,
     },
     success: function(rep){
-      document.getElementById("postHolder" + postId).innerHTML = "<h2>Deleted</h2>";
+      document.getElementById(postBoxId).innerHTML = "<h2>Deleted</h2>";
       console.log("Success = "+ rep);
     },
     error: function(rep){

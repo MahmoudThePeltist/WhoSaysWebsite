@@ -1,11 +1,29 @@
 <?php
 
 if($_POST){
+  //if we clicked log out
   if(isset($_POST['logOutBtn'])){
     logOut();
-  } else if(isset($_GET['trashBtn'])){
+  }
+  //if we clicked delete
+  else if(isset($_POST['trashBtn'])){
     deletePost($_POST['postId']);
   }
+  //if we change theme
+  else if(isset($_POST['setTheme'])){
+    changeTheme($_POST['themeA'],$_POST['themeB']);
+  }
+}
+
+function changeTheme($themeA, $themeB){
+  session_start();
+  $_SESSION['primaryTheme'] = $themeA;
+  $_SESSION['secondaryTheme'] = $themeB;
+
+  $retContent = "
+    <link rel='stylesheet' type='text/css' href='CSS/theme" . $_SESSION['primaryTheme'] . ".css'>" .
+    "<link rel='stylesheet' type='text/css' href='CSS/themeD" . $_SESSION['secondaryTheme'] . ".css'>";
+  echo $retContent;
 }
 
 function logOut(){

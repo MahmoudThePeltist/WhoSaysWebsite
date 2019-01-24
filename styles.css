@@ -240,11 +240,11 @@ button:hover{
   overflow:hidden;
   text-align: center;
   /* For the popup to be over the dark overlay */
-  width:50%;
   position:fixed;
-  left:50%;
-  margin-top: -15%;
-  margin-left: -25%;
+  width:50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 2;
 }
 .makePostTitle {
@@ -712,6 +712,10 @@ h5{
   border: 1px solid #ccc;
   border-radius: 6px;
   transition: all 0.1s;
+}
+.profile_input_holder{
+  display:inline-block;
+  margin: 0px 20px;
 }
 .profile_label{
   font-size: 1.25vw;

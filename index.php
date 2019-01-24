@@ -43,6 +43,15 @@
       }
     }
   }
+
+  //theme variables:
+  if(!isset($_SESSION['primaryTheme'])){
+    $_SESSION['primaryTheme'] = 0;
+  } if (!isset($_SESSION['secondaryTheme'])){
+    $_SESSION['secondaryTheme'] = 0;
+  }
+
+  //include page html
   include "includes/index.html";
   //Closing the DB
   $conn->close();

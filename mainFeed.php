@@ -45,6 +45,13 @@
       }
     }
   }
+  //theme variables:
+  if(!isset($_SESSION['primaryTheme'])){
+    $_SESSION['primaryTheme'] = 0;
+  } if (!isset($_SESSION['secondaryTheme'])){
+    $_SESSION['secondaryTheme'] = 0;
+  }
+  //bost building
   $getPostsFunctionReturnArray = getPostsArray($conn, $currentCategory,$currentUserName, $userDataID, $rank);
   $postsArray = $getPostsFunctionReturnArray;
   // //testing data

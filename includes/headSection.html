@@ -14,9 +14,11 @@
 
 <!-- My styles: -->
 <link rel="stylesheet" type="text/css" href="styles.css">
-<!-- My theme: -->
-<link rel="stylesheet" type="text/css" href="CSS/theme0.css">
-<link rel="stylesheet" type="text/css" href="CSS/themeD0.css">
+<!-- Dfault theme: -->
+<div id="page_theme">
+  <link rel="stylesheet" type="text/css" href="CSS/theme<?php echo $_SESSION['primaryTheme']; ?>.css">
+  <link rel="stylesheet" type="text/css" href="CSS/themeD<?php echo $_SESSION['secondaryTheme']; ?>.css">
+</div>
 <!--jQuery-->
 <script src="js/jquery-3.3.1.js"></script>
 <!-- my scripts -->
