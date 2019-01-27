@@ -80,6 +80,46 @@ function editProfileText(){
   }
 }
 
+function toggleFollow(button){
+  if(button.innerHTML == "Follow"){
+    $.ajax({
+      url: "phpconnect.php",
+      type: "post",
+      data: {
+        currentUserId: currentUserID,
+        profileUserId: dataUserID,
+        toggleFollow : 1,
+      },
+      success:function(reply){
+        console.log("success: " + reply);
+        button.innerHTML = "Unfollow";
+      },
+      error:function(reply){
+        console.log("error: " + reply);
+      },
+    });
+  } else if(button.innerHTML == "Unfollow") {
+    $.ajax({
+      url: "phpconnect.php",
+      type: "post",
+      data: {
+        currentUserId: currentUserID,
+        profileUserId: dataUserID,
+        toggleFollow : 2,
+      },
+      success:function(reply){
+        console.log("success: " + reply);
+        button.innerHTML = "Follow";
+      },
+      error:function(reply){
+        console.log("error: " + reply);
+      },
+    });
+  } else {
+    button.innerHTML = "Follow";
+  }
+}
+
 function submitComment(e){
   var postIdValue = e.target.value;
   var inputId = "commentInput" + postIdValue;

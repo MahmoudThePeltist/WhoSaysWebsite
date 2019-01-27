@@ -17,6 +17,10 @@ if($_POST){
   else if(isset($_POST['editProfileText'])){
     updateProfileText($_POST['newProfileText'], $_POST['profileUserId']);
   }
+  //toggleFollow
+  else if(isset($_POST['toggleFollow'])){
+    toggleFollow($_POST['toggleFollow'],$_POST['currentUserId'],$_POST['profileUserId']);
+  }
 }
 
 
@@ -88,9 +92,10 @@ function getProfileText($conn,$userId){
 }
 
 function updateProfileText($newProfileText, $userId){
-  $conn = connectToDB();
+  $conn = connectToDB(); //connect to database
   $conn->query("UPDATE `userprofiletable` SET `profileText` = '$newProfileText' WHERE `userId` = '$userId'");
   echo $newProfileText;
+  $conn->close();
 }
 
 function changeTheme($themeA, $themeB){
@@ -104,6 +109,28 @@ function changeTheme($themeA, $themeB){
   echo $retContent;
 }
 
+function toggleFollow($action, $followerId, $followedId){
+  $conn = connectToDB();
+  if($action == 1){
+    $conn->query("INSERT INTO `userfollowtable`(`followerId`, `followedId`) VALUES ('$followerId','$followedId')");
+  } else if ($action == 2){
+    $conn->query("DELETE FROM `userfollowtable` WHERE `followerId` = '$followerId' AND `followedId` = '$followedId'");
+  }
+  $conn->close();
+}
+
+function followerAuthenticate($conn,$followerId,$followedId){
+  //check if two users are actually in a follower->followed relationship
+  $query = "SELECT * FROM `userfollowtable` WHERE `followerId` = '$followerId' AND `followedId` = '$followedId'";
+  $valueObject = $conn->query($query);
+  $value = $valueObject->fetch_assoc();
+  //if follower->followed relationship exists return true, else return false
+  if($value){
+    return 1;
+  } else {
+    return 0;
+  }
+}
 
 function getCategoryData($conn){
   //categorys gotten from db
@@ -126,6 +153,7 @@ function deletePost($postId){
   $conn = connectToDB();
   $conn->query("DELETE FROM `posttable` WHERE postId = '$postId'");
   echo "DELETED";
+  $conn->close();
 }
 
 function connectToDB(){

@@ -114,6 +114,9 @@ button:hover{
   border-radius: 15px;
   transition: all 0.5s;
 }
+.categoryLabelInPost:hover{
+background-color:var(--second-color-D);
+}
 .textInput{
   padding:15px;
   width: 80%;
@@ -379,9 +382,6 @@ button:hover{
   font-size: 12pt;
   transition: all 0.5s;
   overflow: hidden;
-}
-.postTitle:hover .categoryLabelInPost {
-  background-color: var(--second-color-B);
 }
 .postTitle a{
   color:white;

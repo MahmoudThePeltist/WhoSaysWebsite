@@ -50,9 +50,7 @@
         </button>
       </form>
     '; } else { echo '
-    <button class="profile_btn" name="followBtn" onClick="follow()">
-      Follow
-    </button>
+    <button class="profile_btn" name="followBtn" onclick="toggleFollow(this)">'.$followBtnTxt.'</button>
   ';}?>
   </div>
 
@@ -99,6 +97,7 @@
   <script>
     //these variables are the current users data and are passed from the php...
     //...to the javascript to be utilized when the user attempts to make a comment
+    var currentUserID = <?php echo $currentUserDataArray['ID'];?>;
     var dataUserID = <?php echo $profileUserID;?>;
     var dataUserName = "<?php echo $userDataUserName;?>";
     var dataUserImageSrc = "<?php echo $userDataImageURL;?>";

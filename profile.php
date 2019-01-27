@@ -30,7 +30,15 @@
   }
   //connect to db
   $conn = connectToDB();
+  $currentUserDataArray = getUserData($conn, $currentUserName);
   $userDataArray = getUserData($conn, $profileUserName);
+  //is a follower?
+  $isAFollower = followerAuthenticate($conn,$currentUserDataArray["ID"],$userDataArray["ID"]);
+  if($isAFollower == 1){
+    $followBtnTxt = "Unfollow";
+  } else {
+    $followBtnTxt = "Follow";
+  }
   //rank of user
   if($userDataArray["Premissions"]){$rank = "Admin";}else{$rank = "User";}
   //variables to be used in the profile template's userdata area:
