@@ -30,17 +30,18 @@
   }
   //connect to db
   $conn = connectToDB();
-  $currentUserObject = $conn->query("SELECT * FROM usertable WHERE Username = '$profileUserName'");
-  $currentUserArray = $currentUserObject->fetch_assoc();
-  $profileUserID = $currentUserArray["ID"];
+  $userDataArray = getUserData($conn, $profileUserName);
   //rank of user
-  if($currentUserArray["Premissions"]){$rank = "Admin";}else{$rank = "User";}
+  if($userDataArray["Premissions"]){$rank = "Admin";}else{$rank = "User";}
   //variables to be used in the profile template's userdata area:
-  $userDataID = $currentUserArray["ID"];
-  $userDataImageURL = $currentUserArray["userImage"];
-  $userDataUserName = $currentUserArray["Username"];
-
-  $getPostsFunctionReturnArray = getPostsArray($conn, $currentCategory,$userDataUserName, $userDataID, $isCurrentUsersPage, $profileUserID);
-  $postsArray = $getPostsFunctionReturnArray;
-  include "includes/profile.html"
+  $profileUserID = $userDataArray["ID"];
+  $userDataImageURL = $userDataArray["userImage"];
+  $userDataUserName = $userDataArray["Username"];
+  //get the profile text
+  $profileText = getProfileText($conn, $profileUserID);
+  //get all the posts for this spcific user, to be used in the HTML template
+  $postsArray = getPostsArray($conn, $currentCategory,$userDataUserName, $profileUserID, $isCurrentUsersPage, $profileUserID);
+  //get the HTML template
+  include "includes/profile.html";
+  $conn->close();
 ?>

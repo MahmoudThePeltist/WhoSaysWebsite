@@ -46,6 +46,40 @@ function setTheme(){
   });
 }
 
+function editProfileText(){
+  var textBox = document.getElementById("profileText");
+  var textBoxText = document.getElementById("profileTextText");
+  var editBox = document.getElementById("profileTextEdit");
+  var editBoxInputArea = document.getElementById("profileTextarea");
+  if(textBox.style.display == 'block'){
+    editBoxInputArea.innerHTML = textBoxText.innerHTML;
+    editBox.style.display = 'block';
+    textBox.style.display = 'none';
+  } else {
+    var newProfileText = editBoxInputArea.value;
+    editBox.style.display = 'none';
+    textBox.style.display = 'block';
+    $.ajax({
+      url:"phpconnect.php",
+      type:"post",
+      data:{
+        newProfileText : newProfileText,
+        profileUserId: dataUserID,
+        editProfileText : 1,
+      },
+      success:function(reply){
+        console.log("success: " + reply);
+        editBox.style.display = 'none';
+        textBox.style.display = 'block';
+        textBoxText.innerHTML = reply;
+      },
+      error:function(reply){
+        console.log("success: " + reply);
+      },
+    });
+  }
+}
+
 function submitComment(e){
   var postIdValue = e.target.value;
   var inputId = "commentInput" + postIdValue;

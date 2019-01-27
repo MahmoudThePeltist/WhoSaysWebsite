@@ -16,7 +16,7 @@
   ?>
   <div class="profileUserData">
     <div class="profileUserImageSpace">
-      <img class="userImage" id="mainUserImage" name=<?php echo $userDataID; ?> src=<?php echo $userDataImageURL; ?> >
+      <img class="userImage" id="mainUserImage" name=<?php echo $profileUserID; ?> src=<?php echo $userDataImageURL; ?> >
       <?php if($isCurrentUsersPage){ echo '
         <form action="upload.php" class="profileUserImageForm" method="POST" enctype="multipart/form-data">
           <input type="file" class="profileChangeUserImage" onchange="form.submit()" name="fileInput"/>
@@ -26,7 +26,20 @@
     <span class="profileData">
       <h3 class="profileUserDataUserName" id="userDataUserName"><?php echo $rank; ?> <?php echo $userDataUserName; ?></h3>
     </span>
+
+    <div class="profile_text" id="profileText" style="display: block;">
+      <span id="profileTextText"><?php echo $profileText; ?></span>
+      <?php if($isCurrentUsersPage){ echo '
+        <i class="pencilIcon fas fa-pencil-alt" id="openTextEditBoxBtn" onclick="editProfileText()"></i>
+      ';}?>
+    </div>
     <?php if($isCurrentUsersPage){ echo '
+      <div class="profile_text_input" id="profileTextEdit">
+        <textarea rows="3" cols="20" class="profile_txt_area" id="profileTextarea"></textarea>
+        <button class="profile_btn" id="changeTxtBtn" onclick="editProfileText()">
+          Submit
+        </button>
+      </div>
       <button class="profile_btn" id="changeThemeBtn" onclick="showBox(\'makePostBox\',\'darkBackground\')">
         Change Theme
       </button>
@@ -86,7 +99,7 @@
   <script>
     //these variables are the current users data and are passed from the php...
     //...to the javascript to be utilized when the user attempts to make a comment
-    var dataUserID = <?php echo $userDataID;?>;
+    var dataUserID = <?php echo $profileUserID;?>;
     var dataUserName = "<?php echo $userDataUserName;?>";
     var dataUserImageSrc = "<?php echo $userDataImageURL;?>";
     //pass all the posts and their comments to Javascript as a JSON :

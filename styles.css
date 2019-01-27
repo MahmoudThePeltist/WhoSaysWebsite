@@ -436,8 +436,7 @@ button:hover{
 }
 .commentBtn:hover, .profile_btn:hover, .profile_theme:hover{
   background-color: transparent;
-  border: 3px solid #ccc;
-  padding: 6px;
+  border: 2px solid #ccc;
 }
 .commentsSection{
   background-color: var(--second-color-D);
@@ -703,8 +702,8 @@ h5{
 }
 .profile_btn{
   font-family: var(--font-group-a);
-  font-size: 1.25vw;
   color: var(--main-font-color);
+  font-size: 1.22vw;
   background-color: transparent;
   width:11vw;
   margin: 5px;
@@ -721,6 +720,23 @@ h5{
   font-size: 1.25vw;
   font-family: var(--font-group-a);
   color: var(--second-font-color);
+}
+.profile_text{
+  font-size: 1.15vw;
+  font-family: var(--font-group-a);
+  color: var(--second-font-color);
+  display: block;
+  margin-bottom: 0.5vw;
+}
+.profile_text_input{
+  display: none;
+  margin-bottom: 0.5vw;
+}
+.profile_text_input textarea{
+  font-family: var(--font-group-a);
+}
+.pencilIcon{
+  cursor: pointer;
 }
 .profile_theme{
   width:10vw;

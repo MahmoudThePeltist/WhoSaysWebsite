@@ -13,6 +13,84 @@ if($_POST){
   else if(isset($_POST['setTheme'])){
     changeTheme($_POST['themeA'],$_POST['themeB']);
   }
+  //if we change profile text
+  else if(isset($_POST['editProfileText'])){
+    updateProfileText($_POST['newProfileText'], $_POST['profileUserId']);
+  }
+}
+
+
+function loginUser($conn,$loginUsername,$loginPassword){
+  $passObject = $conn->query("SELECT `Password` FROM `usertable` WHERE `Username` = '$loginUsername'");
+  $pass = $passObject->fetch_assoc();
+  $hashedPassword = $pass['Password'];
+  if(password_verify($loginPassword, $hashedPassword)){
+    $whatHappened = "<b class='inputLabel'>Logged in as " . $loginUsername . "</b><br>";
+    //set user id for this session and go to mainfeed
+    $_SESSION['userID'] = $loginUsername;
+    header('location: mainFeed.php');
+    exit();
+  } else {
+    $whatHappened = "<b class='inputLabel'>Wrong Username or Password.</b><br>";
+  }
+}
+
+function registerUser($conn,$registerUsername,$registerEmail,$registerPassword1,$registerPassword2){
+  $defaultPicture = 'userImages/userDefault.png';
+  $userCheckObject = $conn->query("SELECT `Username` FROM `usertable` WHERE `Username` = '$registerUsername'");
+  $userCheck = $userCheckObject->fetch_assoc();
+  if(!isset($userCheck)){
+    if ($registerPassword1 == $registerPassword2){
+      $hashedPassword = password_hash($registerPassword1, PASSWORD_DEFAULT);
+      $conn->query("INSERT INTO `usertable`(`ID`, `Username`, `Email`, `Password`,`userImage`,`Premissions`) VALUES (NULL,'$registerUsername','$registerEmail','$hashedPassword','$defaultPicture','0')");
+      //create default profile
+      $registerIdObj = $conn->query("SELECT `ID` from `usertable` WHERE `username` = '$registerUsername'");
+      $registerIdFetch = $registerIdObj->fetch_assoc();
+      $registerId = $registerIdFetch['ID'];
+      $conn->query("INSERT INTO `userprofiletable`(`userId`, `profileText`) VALUES ('$registerId','Welcome to my profile!')");
+      //set user id for this session and go to mainfeed
+      $_SESSION['firstLaunch'] = 1;
+      $_SESSION['userID'] = $registerUsername;
+      header('location: mainFeed.php');
+      exit();
+    } else {
+      $whatHappened = "<b class='inputLabel'>Make sure both passwords are the same!</b>";
+    }
+  } else {
+    $whatHappened = "<b class='inputLabel'>That username is taken!</b>";
+  }
+}
+
+function logOut(){
+  //log out
+  session_start();
+  $_SESSION['userID'] = NULL;
+  header('location: index.php');
+}
+
+function getUserData($conn, $userName){
+  $userDataObj = $conn->query("SELECT * FROM `usertable` WHERE `Username` = '$userName'");
+  $userDataArray = $userDataObj->fetch_assoc();
+  return $userDataArray;
+}
+
+function getProfileText($conn,$userId){
+  $getProfTxtObj = $conn->query("SELECT `profileText` FROM `userprofiletable` WHERE `userId` = '$userId'");
+  $getProfTxtFetch = $getProfTxtObj->fetch_assoc();
+  if($getProfTxtFetch['profileText']){
+    $profileText = $getProfTxtFetch['profileText'];
+    return $profileText;
+  } else {
+    $profileText = "Welcome to my profile :)";
+    $conn->query("INSERT INTO `userprofiletable`(`userId`, `profileText`) VALUES ('$userId','$profileText')");
+    return $profileText;
+  }
+}
+
+function updateProfileText($newProfileText, $userId){
+  $conn = connectToDB();
+  $conn->query("UPDATE `userprofiletable` SET `profileText` = '$newProfileText' WHERE `userId` = '$userId'");
+  echo $newProfileText;
 }
 
 function changeTheme($themeA, $themeB){
@@ -26,12 +104,6 @@ function changeTheme($themeA, $themeB){
   echo $retContent;
 }
 
-function logOut(){
-  //log out
-  session_start();
-  $_SESSION['userID'] = NULL;
-  header('location: index.php');
-}
 
 function getCategoryData($conn){
   //categorys gotten from db
