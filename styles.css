@@ -667,6 +667,7 @@ h5{
 .profileUserData{
   position:fixed;
   width: 30%;
+  min-height: 30%;
   margin-top: 3.7%;
   margin-left: 5%;
   background-color:var(--second-color-D);
@@ -790,11 +791,9 @@ h5{
   .profilePost{
     margin-left: auto;
   }
-  .profileUserData {
+  .profileUserData{
     margin: 40px auto;
     float:none;
-  }
-  .profileUserData{
     position:fixed;
     display: none;
     margin: auto;

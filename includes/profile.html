@@ -22,6 +22,10 @@
           <input type="file" class="profileChangeUserImage" onchange="form.submit()" name="fileInput"/>
         </form>
       ';}?>
+      <div class="followerInfoContainer profile_text">
+        <span><?php echo $followStatsArray['0']; ?> Followers</span><br>
+        <span><?php echo $followStatsArray['1']; ?> Following</span>
+      </div>
     </div>
     <span class="profileData">
       <h3 class="profileUserDataUserName" id="userDataUserName"><?php echo $rank; ?> <?php echo $userDataUserName; ?></h3>

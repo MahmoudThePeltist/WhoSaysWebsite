@@ -119,6 +119,20 @@ function toggleFollow($action, $followerId, $followedId){
   $conn->close();
 }
 
+function followStats($profileUserId){
+  //get the data where the user is the follower and the followed from the database
+  $conn = connectToDB();
+  $followerObj = $conn->query("SELECT * FROM `userfollowtable` WHERE `followerId` = '$profileUserId'");
+  $followedObj = $conn->query("SELECT * FROM `userfollowtable` WHERE `followedId` = '$profileUserId'");
+  $conn->close();
+  //get the number of followers and followed from the returned data
+  $followerFetch = $followerObj->fetch_assoc();
+  $followedFetch = $followedObj->fetch_assoc();
+  $numberOfFollowers = sizeof($followedFetch['relationshipId']);
+  $numberOfFollowed = sizeof($followerFetch['relationshipId']);
+  return [$numberOfFollowers,$numberOfFollowed];
+}
+
 function followerAuthenticate($conn,$followerId,$followedId){
   //check if two users are actually in a follower->followed relationship
   $query = "SELECT * FROM `userfollowtable` WHERE `followerId` = '$followerId' AND `followedId` = '$followedId'";

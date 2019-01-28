@@ -39,10 +39,12 @@
   } else {
     $followBtnTxt = "Follow";
   }
+  //number of followers and Following
+  $profileUserID = $userDataArray["ID"];
+  $followStatsArray = followStats($profileUserID);
   //rank of user
   if($userDataArray["Premissions"]){$rank = "Admin";}else{$rank = "User";}
   //variables to be used in the profile template's userdata area:
-  $profileUserID = $userDataArray["ID"];
   $userDataImageURL = $userDataArray["userImage"];
   $userDataUserName = $userDataArray["Username"];
   //get the profile text
