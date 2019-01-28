@@ -7,10 +7,11 @@
 
   if ($_POST){
     //Login and registration handling
+    $userObj = new userClass($conn);
     if(isset($_POST["loginButton"])){
-      loginUser($conn,$_POST["loginUsername"],$_POST["loginPassword"]);
+      $userObj->loginUser($_POST["loginUsername"],$_POST["loginPassword"]);
     } else if(isset($_POST["registerButton"])){
-      registerUser($conn,$_POST["registerUsername"], $_POST["registerEmail"], $_POST["registerPassword1"], $_POST["registerPassword2"]);
+      $userObj->registerUser($_POST["registerUsername"], $_POST["registerEmail"], $_POST["registerPassword1"], $_POST["registerPassword2"]);
     }
   }
 

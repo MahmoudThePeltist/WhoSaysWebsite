@@ -21,10 +21,7 @@ body{
 header{
   background-color:	var(--main-color);
   text-align: center;
-  font-family: var(--font-group-a);
-  color:#ffffff;
   overflow: hidden;
-  font-size: 32pt;
   width:100%;
   margin: auto;
   margin-top: 0px;
@@ -92,6 +89,7 @@ button:hover{
   width:50%;
   max-width: 700px;
   overflow:hidden;
+  cursor: default;
   opacity:0.95;
   padding:0px 25px;
   text-align: center;
@@ -132,6 +130,7 @@ background-color:var(--second-color-D);
 .navbar-item {
   background-color: var(--main-color-B);
   float: left;
+  font-family: var(--font-group-a);
   font-size: 18px;
   color: white;
   text-align: center;
@@ -153,6 +152,7 @@ background-color:var(--second-color-D);
 
 /* The dropdown container */
 .dropdown {
+  font-family: var(--font-group-a);
   float: left;
   overflow: hidden;
 }
@@ -181,7 +181,7 @@ background-color:var(--second-color-D);
   background-color: #f9f9f9;
   min-width: 146px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
+  z-index: 2;
 }
 
 /* Links inside the dropdown */
@@ -363,15 +363,22 @@ background-color:var(--second-color-D);
   list-style-type:none;
   background-color: #ddd;
   color: black;
+  z-index: 2;
 }
 .searchListItem{
   transition: all 0.5s;
   padding:5px 3px;
+  z-index: 2;
 }
 .searchListItem:hover{
   cursor: pointer;
   background-color: darkgrey;
   color: white;
+}
+.searchListItem a{
+  color: black;
+  text-decoration: none;
+  font-size: 16pt;
 }
 /*Post stuff:*/
 .postTitle{
@@ -667,7 +674,9 @@ h5{
 .profileUserData{
   position:fixed;
   width: 30%;
+  height: 220px;
   min-height: 30%;
+  max-height: 60%;
   margin-top: 3.7%;
   margin-left: 5%;
   background-color:var(--second-color-D);

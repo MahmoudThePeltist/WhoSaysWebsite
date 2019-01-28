@@ -1,9 +1,22 @@
 <?php
 
+function connectToDB(){
+    //credentials
+    $dbName = "socialmediadb";
+    $name = "Mahmoud";
+    $password = "mahmoud1996";
+    $connect =  new mysqli("localhost",$name,$password,$dbName);
+    if ($connect->connect_error){
+      echo "<h2>Database error: " . mysqli_connect_error() . "</h2>";
+    }
+    return $connect;
+  }
+
 if($_POST){
   //if we clicked log out
   if(isset($_POST['logOutBtn'])){
-    logOut();
+    $userObj = new userClass();
+    $userObj->logOut();
   }
   //if we clicked delete
   else if(isset($_POST['trashBtn'])){
@@ -21,55 +34,66 @@ if($_POST){
   else if(isset($_POST['toggleFollow'])){
     toggleFollow($_POST['toggleFollow'],$_POST['currentUserId'],$_POST['profileUserId']);
   }
-}
-
-
-function loginUser($conn,$loginUsername,$loginPassword){
-  $passObject = $conn->query("SELECT `Password` FROM `usertable` WHERE `Username` = '$loginUsername'");
-  $pass = $passObject->fetch_assoc();
-  $hashedPassword = $pass['Password'];
-  if(password_verify($loginPassword, $hashedPassword)){
-    $whatHappened = "<b class='inputLabel'>Logged in as " . $loginUsername . "</b><br>";
-    //set user id for this session and go to mainfeed
-    $_SESSION['userID'] = $loginUsername;
-    header('location: mainFeed.php');
-    exit();
-  } else {
-    $whatHappened = "<b class='inputLabel'>Wrong Username or Password.</b><br>";
+  //Getting value of "search" variable from "script.js".
+  else if (isset($_POST['search'])) {
+    searchUsers($_POST['search']);
   }
 }
 
-function registerUser($conn,$registerUsername,$registerEmail,$registerPassword1,$registerPassword2){
-  $defaultPicture = 'userImages/userDefault.png';
-  $userCheckObject = $conn->query("SELECT `Username` FROM `usertable` WHERE `Username` = '$registerUsername'");
-  $userCheck = $userCheckObject->fetch_assoc();
-  if(!isset($userCheck)){
-    if ($registerPassword1 == $registerPassword2){
-      $hashedPassword = password_hash($registerPassword1, PASSWORD_DEFAULT);
-      $conn->query("INSERT INTO `usertable`(`ID`, `Username`, `Email`, `Password`,`userImage`,`Premissions`) VALUES (NULL,'$registerUsername','$registerEmail','$hashedPassword','$defaultPicture','0')");
-      //create default profile
-      $registerIdObj = $conn->query("SELECT `ID` from `usertable` WHERE `username` = '$registerUsername'");
-      $registerIdFetch = $registerIdObj->fetch_assoc();
-      $registerId = $registerIdFetch['ID'];
-      $conn->query("INSERT INTO `userprofiletable`(`userId`, `profileText`) VALUES ('$registerId','Welcome to my profile!')");
+class userClass {
+  public $conn;
+
+  public function __construct($connToDB){
+    $this->conn = $connToDB;
+  }
+
+  public function loginUser($loginUsername,$loginPassword){
+    $passObject = $this->conn->query("SELECT `Password` FROM `usertable` WHERE `Username` = '$loginUsername'");
+    $pass = $passObject->fetch_assoc();
+    $hashedPassword = $pass['Password'];
+    if(password_verify($loginPassword, $hashedPassword)){
+      $whatHappened = "<b class='inputLabel'>Logged in as " . $loginUsername . "</b><br>";
       //set user id for this session and go to mainfeed
-      $_SESSION['firstLaunch'] = 1;
-      $_SESSION['userID'] = $registerUsername;
+      $_SESSION['userID'] = $loginUsername;
       header('location: mainFeed.php');
       exit();
     } else {
-      $whatHappened = "<b class='inputLabel'>Make sure both passwords are the same!</b>";
+      $whatHappened = "<b class='inputLabel'>Wrong Username or Password.</b><br>";
     }
-  } else {
-    $whatHappened = "<b class='inputLabel'>That username is taken!</b>";
   }
-}
 
-function logOut(){
-  //log out
-  session_start();
-  $_SESSION['userID'] = NULL;
-  header('location: index.php');
+  public function registerUser($registerUsername,$registerEmail,$registerPassword1,$registerPassword2){
+    $defaultPicture = 'userImages/userDefault.png';
+    $userCheckObject = $this->conn->query("SELECT `Username` FROM `usertable` WHERE `Username` = '$registerUsername'");
+    $userCheck = $userCheckObject->fetch_assoc();
+    if(!isset($userCheck)){
+      if ($registerPassword1 == $registerPassword2){
+        $hashedPassword = password_hash($registerPassword1, PASSWORD_DEFAULT);
+        $this->conn->query("INSERT INTO `usertable`(`ID`, `Username`, `Email`, `Password`,`userImage`,`Premissions`) VALUES (NULL,'$registerUsername','$registerEmail','$hashedPassword','$defaultPicture','0')");
+        //create default profile
+        $registerIdObj = $this->conn->query("SELECT `ID` from `usertable` WHERE `username` = '$registerUsername'");
+        $registerIdFetch = $registerIdObj->fetch_assoc();
+        $registerId = $registerIdFetch['ID'];
+        $this->conn->query("INSERT INTO `userprofiletable`(`userId`, `profileText`) VALUES ('$registerId','Welcome to my profile!')");
+        //set user id for this session and go to mainfeed
+        $_SESSION['firstLaunch'] = 1;
+        $_SESSION['userID'] = $registerUsername;
+        header('location: mainFeed.php');
+        exit();
+      } else {
+        $whatHappened = "<b class='inputLabel'>Make sure both passwords are the same!</b>";
+      }
+    } else {
+      $whatHappened = "<b class='inputLabel'>That username is taken!</b>";
+    }
+  }
+
+  function logOut(){
+    //log out
+    session_start();
+    $_SESSION['userID'] = NULL;
+    header('location: index.php');
+  }
 }
 
 function getUserData($conn, $userName){
@@ -78,7 +102,8 @@ function getUserData($conn, $userName){
   return $userDataArray;
 }
 
-function getProfileText($conn,$userId){
+function getProfileText($userId){
+  $conn = connectToDB();
   $getProfTxtObj = $conn->query("SELECT `profileText` FROM `userprofiletable` WHERE `userId` = '$userId'");
   $getProfTxtFetch = $getProfTxtObj->fetch_assoc();
   if($getProfTxtFetch['profileText']){
@@ -89,6 +114,7 @@ function getProfileText($conn,$userId){
     $conn->query("INSERT INTO `userprofiletable`(`userId`, `profileText`) VALUES ('$userId','$profileText')");
     return $profileText;
   }
+  $conn->close();
 }
 
 function updateProfileText($newProfileText, $userId){
@@ -126,10 +152,14 @@ function followStats($profileUserId){
   $followedObj = $conn->query("SELECT * FROM `userfollowtable` WHERE `followedId` = '$profileUserId'");
   $conn->close();
   //get the number of followers and followed from the returned data
-  $followerFetch = $followerObj->fetch_assoc();
-  $followedFetch = $followedObj->fetch_assoc();
-  $numberOfFollowers = sizeof($followedFetch['relationshipId']);
-  $numberOfFollowed = sizeof($followerFetch['relationshipId']);
+  $numberOfFollowed = 0;
+  $numberOfFollowers = 0;
+  while($followerFetch = $followerObj->fetch_assoc()){
+    $numberOfFollowed += 1;
+  }
+  while($followedFetch = $followedObj->fetch_assoc()){
+    $numberOfFollowers  += 1;
+  }
   return [$numberOfFollowers,$numberOfFollowed];
 }
 
@@ -170,18 +200,6 @@ function deletePost($postId){
   $conn->close();
 }
 
-function connectToDB(){
-    //credentials
-    $dbName = "socialmediadb";
-    $name = "Mahmoud";
-    $password = "mahmoud1996";
-    $connect =  new mysqli("localhost",$name,$password,$dbName);
-    if ($connect->connect_error){
-      echo "<h2>Database error: " . mysqli_connect_error() . "</h2>";
-    }
-    return $connect;
-  }
-
 function formValidate($textItem){
       $noSpaceText = str_replace(' ', '~', $textItem);
       $noBracketTextR = str_replace(')', '\)', $noSpaceText);
@@ -190,6 +208,23 @@ function formValidate($textItem){
       $noSignText = str_replace('~', ' ', $noSpaceNoSignText);
       return $noSignText;
   }
+
+function searchUsers($Name){
+  $conn = connectToDB();
+  $ExecQuery = $conn->query("SELECT Username FROM usertable where Username LIKE '%$Name%' LIMIT 5");
+  //Creating unordered list to display result.
+  echo '<ul class="searchList">';
+  //Fetching result from database.
+  while ($Result = $ExecQuery->fetch_array()) {
+    //Creating unordered list items that connect to js function to fill the search bar.
+    echo '
+    <li class="searchListItem" onclick="fill(\''.$Result['Username'].'\')">
+     <a href="profile.php?username='.$Result['Username'].'">'.$Result['Username'].'</a>
+    </li>';
+ }
+ echo '</ul>';
+ $conn->close();
+}
 
 function timeAgo($time_ago){
     $time_ago = strtotime($time_ago);

@@ -48,7 +48,7 @@
   $userDataImageURL = $userDataArray["userImage"];
   $userDataUserName = $userDataArray["Username"];
   //get the profile text
-  $profileText = getProfileText($conn, $profileUserID);
+  $profileText = getProfileText($profileUserID);
   //get all the posts for this spcific user, to be used in the HTML template
   $postsArray = getPostsArray($conn, $currentCategory,$userDataUserName, $profileUserID, $isCurrentUsersPage, $profileUserID);
   //get the HTML template

@@ -9,9 +9,6 @@ function fill(Value) {
 $(document).ready(function() {
   //On pressing a key on "Search box" in "search.php" file. This function will be called.
   $("#search").keyup(function(e) {
-    if(e.keyCode == 13){
-      alert("You pressed enter!");
-    }
     //Assigning search box value to javascript variable named as "name".
     var name = $('#search').val();
     //Validating, if "name" is empty.
@@ -22,7 +19,7 @@ $(document).ready(function() {
         //AJAX type is "Post".
         type: "POST",
         //Data will be sent to "search.php".
-        url: "search.php",
+        url: "phpconnect.php",
         //Data, that will be sent to "search.php".
         data: {
           search: name
