@@ -6,10 +6,12 @@ This website was started during the IONPlus Web Bootcamp of 2018, and is ongoing
 The website currently supports:
   * Account Creation (Admin or User).
   * User text posts.
-  * User image posts (v 0.1).
+  * User image posts (since v 0.1).
   * Main feed to display user posts.
   * Multiple categories of posts with possibility of adding more.
-  * User search function (unfinshed).
+  * User search function (done).
   * User Profiles.
-  * User Profile image change.
-  
+  * User Profile-Pic changes.
+  * User Profile-Text changes.
+  * User Following.
+  * User Profile Stats.
