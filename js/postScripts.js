@@ -121,7 +121,7 @@ function toggleFollow(button){
 }
 
 function submitComment(e){
-  var postIdValue = e.target.value;
+  var postIdValue = e.currentTarget.value;
   var inputId = "commentInput" + postIdValue;
   var userIdValue = dataUserID;
   var userNameValue = dataUserName;
@@ -137,12 +137,13 @@ function submitComment(e){
     var commentHTML = buildCommentHtml(userImageSrc,userNameValue,"Just now",commentTextValue);
     $(document).ready(function(){
       $.ajax({
-         url: 'postComment.php',
+         url: 'phpconnect.php',
          type: 'POST',
          data: {
            postIdCom: postIdValue,
            userIdCom: userIdValue,
            commentText: commentTextValue,
+           postComment: 1,
          },
          success: function(resp){
            commentsHTML = commentHTML + commentsHTML;
@@ -159,28 +160,30 @@ function submitComment(e){
 
 function addPoint(e){
   //get the button's current value for the JS part
-  textElement = e.target.children[1];
+  currentTarget = e.currentTarget;
+  textElement = currentTarget.children[1];
   value = textElement.innerHTML;
   //get the post id and button name for the AJAX part
-  var postIdVar = e.target.value;
-  var btnTypeVar = e.target.name;
+  var postIdVar = currentTarget.value;
+  var btnTypeVar = currentTarget.name;
   //ajax operation to record the operation
   $(document).ready(function(){
     $.ajax({
-       url: 'emoticon.php',
+       url: 'phpconnect.php',
        type: 'POST',
        data: {
          userId: dataUserID,
          postId: postIdVar,
          btnType: btnTypeVar,
+         postEmoticon: 1,
        },
        success: function(resp){
          if(resp == 1){
            textElement.innerHTML = ++value;
-           e.target.style = "background-color: white; color:black;";
+           currentTarget.style = "background-color: white; color:black;";
          } else if(resp == 0) {
            textElement.innerHTML = --value;
-           e.target.style = "background-color: transparent; color:white;";
+           currentTarget.style = "background-color: transparent; color:white;";
          }
        },
        error: function(resp){
@@ -236,7 +239,7 @@ function makePost(){
 
 function ajaxPost(postType,textValue,imageURL,category,errorText){
   $.ajax({
-    url:'postPost.php',
+    url:'phpconnect.php',
     type:'post',
     data:{
       userIdCom:dataUserID,
@@ -244,6 +247,7 @@ function ajaxPost(postType,textValue,imageURL,category,errorText){
       postText:textValue,
       postImage:imageURL,
       postcategory:category,
+      postPost: 1,
     },
     success: function(resp){
       document.getElementById("errorBox").innerHTML = "<p class='postBoxErrorText'>" + errorText + "</p>";
@@ -275,7 +279,7 @@ function ajaxImageUpload(imageUploadID,postType,textValue,category,errorText){
   // Adding extra parameters to form_data
   form_data.append("user_id", dataUserID);
   $.ajax({
-    url: "uploadPostImage.php",
+    url: "phpconnect.php",
     dataType: 'script',
     cache: false,
     contentType: false,
@@ -293,6 +297,38 @@ function ajaxImageUpload(imageUploadID,postType,textValue,category,errorText){
     },
   });
 }
+
+function ajaxUserImageUpload(e){
+  // Getting the properties of file from file field
+  var file_data = $(e).prop("files")[0];
+  console.log("file_data: " + file_data);
+  // Creating object of FormData class
+  var form_data = new FormData();
+  // Appending parameter named file with properties of file_field to form_data
+  form_data.append("fileInput", file_data);
+  // Adding extra parameters to form_data
+  form_data.append("user_id", dataUserID);
+  $.ajax({
+    url: "phpconnect.php",
+    dataType: 'script',
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: form_data,
+    type: 'post',
+    success: function(resp){
+      console.log("Success: " + resp);
+      imgElements = document.getElementsByClassName("userImage");
+      for (let imgElement of imgElements){
+        imgElement.src = resp;
+      }
+    },
+    error: function(resp){
+      console.log("Error: " + resp);
+    },
+  });
+}
+
 
 function generatePosts(postsArray){
   var posts = "";// <= Variable to hold all the posts
@@ -446,19 +482,6 @@ function setListeners(){
   for(i=0;i<trashBtns.length;i++){
     trashBtns[i].addEventListener("click",deletePost);
   }
-  //select images:
-  var images = document.getElementsByClassName("postImage");
-  for(i=0;i<images.length;i++){
-    images[i].addEventListener("click", imageReaction);
-  }
-}
-
-function imageReaction(e){
-  // if(e.target.style.width == "100%"){
-  //     e.target.style = "width:60%; margin-left:20%;";
-  // } else {
-  //   e.target.style = "width:100%; margin:0%;";
-  // }
 }
 
 function deletePost(e){

@@ -18,9 +18,7 @@
     <div class="profileUserImageSpace">
       <img class="userImage" id="mainUserImage" name=<?php echo $profileUserID; ?> src=<?php echo $userDataImageURL; ?> >
       <?php if($isCurrentUsersPage){ echo '
-        <form action="upload.php" class="profileUserImageForm" method="POST" enctype="multipart/form-data">
-          <input type="file" class="profileChangeUserImage" onchange="form.submit()" name="fileInput"/>
-        </form>
+          <input type="file" class="profileChangeUserImage" onchange="ajaxUserImageUpload(this)" name="fileInput"/>
       ';}?>
       <div class="followerInfoContainer profile_text">
         <span><?php echo $followStatsArray['0']; ?> Followers</span><br>

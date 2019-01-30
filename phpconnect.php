@@ -38,6 +38,33 @@ if($_POST){
   else if (isset($_POST['search'])) {
     searchUsers($_POST['search']);
   }
+  //post a comment
+  else if (isset($_POST['postComment'])) {
+    postComment($_POST['postIdCom'], $_POST['userIdCom'], $_POST['commentText']);
+  }
+  //post a post
+  else if (isset($_POST['postPost'])) {
+    postPost($_POST['userIdCom'],$_POST['postType'],$_POST['postText'],$_POST['postImage'],$_POST['postcategory']);
+  }
+  //post an emoticon
+  else if (isset($_POST['postEmoticon'])) {
+    postEmoticon($_POST['userId'],$_POST['postId'],$_POST['btnType']);
+  }
+
+  session_start();
+  $userName = $_SESSION['userID'];
+
+  //upload user image:
+  if(isset($_FILES['fileInput'])){
+    $FR = $_FILES['fileInput'];
+    uploadUserImage($userName,$FR['name'],$FR['size'],$FR['tmp_name'],$FR['type'],$FR['name']);
+  }
+
+  //upload user image:
+  else if(isset($_FILES['file'])){
+    $FR = $_FILES['file'];
+    uploadImage($userName,$FR['name'],$FR['size'],$FR['tmp_name'],$FR['type'],$FR['name']);
+  }
 }
 
 class userClass {
@@ -94,6 +121,126 @@ class userClass {
     $_SESSION['userID'] = NULL;
     header('location: index.php');
   }
+}
+
+function uploadUserImage($userName,$file_name,$file_size,$file_tmp,$file_type,$file_name){
+  $conn = connectToDB();
+  $errors= array();
+  $file_ext=strtolower(pathinfo($file_name,PATHINFO_EXTENSION));
+  $expensions= array("jpeg","jpg","png");
+  if(in_array($file_ext,$expensions)=== false){
+    $errors[]="<h1>extension not allowed, please choose a JPEG or PNG file.</h1>";
+  }
+  if($file_size > 2097152) {
+    $errors[]='<h1>File size must be less than 2 MB</h1>';
+  }
+
+  if(empty($errors)==true) {
+    $date = new DateTime();
+    $timeStamp = $date->getTimestamp();
+    $noSpaceName = str_replace(' ', '_', $userName);
+    $file_location = "userImages/". "user" . $noSpaceName . $timeStamp . "." . $file_ext;
+    move_uploaded_file($file_tmp,$file_location);
+    $conn->query("UPDATE usertable SET userImage = '$file_location' WHERE Username = '$userName'");
+    echo $file_location;
+    exit();
+  }else{
+    print_r($errors);
+  }
+  $conn->close();
+}
+
+function uploadImage($userName,$file_name,$file_size,$file_tmp,$file_type,$file_name){
+  $errors= array();
+  $file_ext=strtolower(pathinfo($file_name,PATHINFO_EXTENSION));
+  $expensions= array("jpeg","jpg","png");
+  if(in_array($file_ext,$expensions)=== false){
+    echo "extension not allowed, please choose a JPEG or PNG file.";
+  }
+  if($file_size > 12097152) {
+    echo 'File size must be less than 12 MB';
+  }
+
+  if(empty($errors)==true) {
+    $date = new DateTime();
+    $timeStamp = $date->getTimestamp();
+    $noSpaceName = str_replace(' ', '_', $userName);
+    //directory to save the file
+    $directory = "postImages/". "user_" . $noSpaceName;
+    //create directory if it does not exist
+    if(!file_exists($directory)){
+      mkdir($directory, 0777, true);
+    }
+    //specific file location
+    $file_location = $directory . "/" . $timeStamp . "." . $file_ext;
+    //move file to it's location
+    move_uploaded_file($file_tmp,$file_location);
+    echo $file_location;
+  }else{
+    echo "Error.";
+  }
+}
+
+function postComment($postIdCom,$userIdCom,$commentText){
+  //connect to DB
+  $conn = connectToDB();
+  $insertedComment = formValidate($commentText);
+  //update table with new comment
+  $conn->query("INSERT INTO `commenttable`(`parentID`, `userID`, `commentText`) VALUES ('$postIdCom','$userIdCom','$insertedComment')");
+  $conn->close();
+}
+
+function postPost($userIdCom,$postType,$postText,$postImage,$postcategory){
+  //connect to DB
+  $conn = connectToDB();
+  //perform form validation
+  $postText = formValidate($postText);
+  //update table with new post
+  $conn->query("INSERT INTO `posttable`(`userId`,`postType`,`text`,`imageURL`,`category`) VALUES ('$userIdCom','$postType','$postText','$postImage','$postcategory')");
+  //get category of new postText
+  $catGetObj = $conn->query("SELECT `category` FROM `catagorytable`
+    WHERE `categoryId` = '$postcategory'");
+  $catGet = $catGetObj->fetch_assoc();
+  //get ID of new post
+  $idGetObj = $conn->query("SELECT `postId` FROM `posttable`
+    WHERE `userId` = '$userIdCom'
+    AND `postType` = '$postType'
+    AND `text` = '$postText'
+    AND `imageURL` = '$postImage'");
+  $idGet = $idGetObj->fetch_assoc();
+  $returnArray = [$idGet['postId'],$catGet['category']];
+  echo json_encode($returnArray);
+  $conn->close();
+}
+
+function postEmoticon($userId,$postId,$btnType){
+    //connect to DB
+    $conn = connectToDB();
+    //update DB with emoticon
+    $btnObject = $conn->query("SELECT `$btnType` FROM `posttable` WHERE `postId` = '$postId'");
+    $btnValue = $btnObject->fetch_assoc();
+    $checkObject = $conn->query("SELECT * FROM `emotitable` WHERE `userId` = '$userId' AND `postId` = '$postId'");
+    $checkData = $checkObject->fetch_assoc();
+    if($checkData[$btnType] == 0){
+      $newValue = $btnValue["$btnType"] + 1;
+      if ($checkData) {
+        $conn->query("UPDATE `emotitable` SET `$btnType` = '1' WHERE `userId` = '$userId' AND `postId` = '$postId'");
+        echo "1";
+      } else {
+        $conn->query("INSERT INTO `emotitable` (`userId`, `postId`, `$btnType`) VALUES ('$userId', '$postId', '1')");
+        echo "1";
+      }
+    } elseif($checkData[$btnType] == 1) {
+      $newValue = $btnValue["$btnType"] - 1;
+      if ($checkData) {
+        $conn->query("UPDATE `emotitable` SET `$btnType` = '0' WHERE `userId` = '$userId' AND `postId` = '$postId'");
+        echo "0";
+      }
+    } else {
+      echo "error: " . $checkData[$btnType];
+    }
+    $conn->query("UPDATE `posttable` SET `$btnType` = '$newValue' WHERE `postId` = '$postId'");
+    $conn->close();
 }
 
 function getUserData($conn, $userName){
