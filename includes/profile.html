@@ -57,40 +57,46 @@
   </div>
 
   <?php if($isCurrentUsersPage){ echo '
-      <div id="makePostBox" class="makePostBox">
-        <div class="makePostTitle">
-          <p>Set Theme</p>
-        </div>
-        <br>
-        <div class="profile_input_holder">
-          <label class="profile_label" for="postThemeA">Main Theme</label>
-          <div class="profile_theme">
-            <div class="profile_select">
-              <select name="postThemeA" id="themeSelectA">
-                <option value="0" selected="selected">Blueish</option>
-                <option value="1">Halloween</option>
-                <option value="2">Pale Pink</option>
-                <option value="3">Very Red</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="profile_input_holder">
-          <label class="profile_label" for="postThemeB">Secondary Theme</label>
-          <div class="profile_theme">
-            <div class="profile_select">
-              <select name="postThemeB" id="themeSelectB">
-                <option value="0" selected="selected">Darker</option>
-                <option value="1">Lighter</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <br>
-        <br>
-        <button class="profile_btn" onclick="setTheme()">Set</button>
+    <div id="makePostBox" class="makePostBox">
+      <div class="makePostTitle">
+        <p>Set Theme</p>
       </div>
-  ';}?>
+      <br>
+      <div class="profile_input_holder">
+        <label class="profile_label" for="postThemeA">Main Theme</label>
+        <div class="profile_theme">
+          <div class="profile_select">
+            <select name="postThemeA" id="themeSelectA">
+              <option value="0" selected="selected">Blueish</option>
+              <option value="1">Halloween</option>
+              <option value="2">Pale Pink</option>
+              <option value="3">Very Red</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="profile_input_holder">
+        <label class="profile_label" for="postThemeB">Secondary Theme</label>
+        <div class="profile_theme">
+          <div class="profile_select">
+            <select name="postThemeB" id="themeSelectB">
+              <option value="0" selected="selected">Darker</option>
+              <option value="1">Lighter</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <br>
+      <br>
+      <button class="profile_btn" onclick="setTheme()">Set</button>
+    </div>
+
+    <div class="profile_btn_holder">
+      <a href="'.$currentURL.'profileView=MyPosts" class="profile_btn ';if($profileView==1){echo "profile_btn_active";}echo '">My Posts</a>
+      <a href="'.$currentURL.'profileView=Following" class="profile_btn ';if($profileView==0){echo "profile_btn_active";}echo '">Following</a>
+    </div>
+';}?>
+
 
   <div class="profilePosts" id="postsHolderID">
     <!-- This is where the posts are created by the Javascript -->

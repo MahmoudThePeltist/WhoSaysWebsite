@@ -329,7 +329,6 @@ function ajaxUserImageUpload(e){
   });
 }
 
-
 function generatePosts(postsArray){
   var posts = "";// <= Variable to hold all the posts
   var btnIdArrays = [];// <= variable to hold arrays of the ids of all the emoti btns

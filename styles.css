@@ -93,7 +93,10 @@ button:hover{
   opacity:0.95;
   padding:0px 25px;
   text-align: center;
-  margin:50px auto;
+  margin:2vw auto;
+}
+.postsHolder{
+  margin-top: 4vw;
 }
 .postUserName {
   font-family: var(--font-group-b);
@@ -148,7 +151,6 @@ background-color:var(--second-color-D);
   margin-bottom: 0;
   float:right;
 }
-
 
 /* The dropdown container */
 .dropdown {
@@ -623,24 +625,15 @@ h5{
   height: 800px;
 }
 
-@media (max-width: 1150px) {
-  .userData{
-    width: 130px;
-    border-bottom-right-radius: 50%;
-  }
-  .userDataUserName{
-    font-size: 0pt;
-  }
-  .userDataUserRank{
-    display: none;
-  }
-}
 @media (max-width: 800px) {
   .postHolder{
     width:80%;
     margin: 15px auto;
     padding:0% 5%;
     opacity:0.95;
+  }
+  .postsHolder{
+    margin-top: 8vw;
   }
   .container {
     margin: 40px auto;
@@ -674,7 +667,7 @@ h5{
 .profileUserData{
   position:fixed;
   width: 30%;
-  height: 220px;
+  height: 250px;
   min-height: 30%;
   max-height: 60%;
   margin-top: 3.7%;
@@ -717,9 +710,12 @@ h5{
   width:11vw;
   margin: 5px;
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #bbb;
   border-radius: 6px;
-  transition: all 0.1s;
+  transition: all 0.15s;
+}
+.profile_btn_active{
+  border: 2px solid #bbb;
 }
 .profile_input_holder{
   display:inline-block;
@@ -789,21 +785,49 @@ h5{
   color: var(--main-font-color);
   padding:0;
 }
+.profile_btn_holder {
+  margin-left: 40%;
+  padding: 1% 0%;
+  background-color: var(--second-color-D);
+  width: 40%;
+  margin-top: 1%;
+}
+.profile_btn_holder a{
+  text-decoration: none;
+}
 @media (max-width: 800px) {
   .postHolder{
-    width:80%;
-    margin: 15px auto;
+    width:70%;
+    margin: 1vw auto;
     padding:0% 5%;
     opacity:0.95;
   }
-  .profilePost{
+  .profilePosts{
     margin-left: auto;
   }
   .profileUserData{
-    margin: 40px auto;
+    position:relative;
+    width:70%;
+    margin: 15px auto;
+    padding:0% 5%;
+    opacity:0.95;
     float:none;
-    position:fixed;
-    display: none;
+  }
+  .profile_btn_holder {
+    width: 80%;
     margin: auto;
+    margin-top: 3%;
+  }
+  .profile_btn{
+    display: inline-block;
+    margin: 1vw 1vw;
+    font-size: 2vw;
+    width: 26%;
+  }
+  .profile_label, .profile_text, .profileUserDataUserName{
+    font-size: 2vw;
+  }
+  .followerInfoContainer {
+    font-size: 1.5vw;
   }
 }

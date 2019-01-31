@@ -115,7 +115,7 @@ class userClass {
     }
   }
 
-  function logOut(){
+  public function logOut(){
     //log out
     session_start();
     $_SESSION['userID'] = NULL;
@@ -317,10 +317,42 @@ function followerAuthenticate($conn,$followerId,$followedId){
   $value = $valueObject->fetch_assoc();
   //if follower->followed relationship exists return true, else return false
   if($value){
-    return 1;
+    return "Unfollow";
   } else {
-    return 0;
+    return "Follow";
   }
+}
+
+function followIDs($profileUserId){
+  //get the data where the user is the follower and the followed from the database
+  $conn = connectToDB();
+  $followerObj = $conn->query("SELECT * FROM `userfollowtable` WHERE `followerId` = '$profileUserId'");
+  $followedObj = $conn->query("SELECT * FROM `userfollowtable` WHERE `followedId` = '$profileUserId'");
+  $conn->close();
+  //get the number of followers and followed from the returned data
+  $followedIDs = array();
+  $followerIDs = array();
+  while($followerFetch = $followerObj->fetch_assoc()){
+    $followedIDs[] = $followerFetch['followedId'];
+  }
+  while($followedFetch = $followedObj->fetch_assoc()){
+    $followerIDs[] = $followedFetch['followerId'];
+  }
+  return [$followerIDs,$followedIDs];
+}
+
+function getFollowerPosts($conn,$followerIdsArray,$currentUserId){
+  $postsArray = [];
+  //going over IDs array
+  for ($i = 0; $i < sizeof($followerIdsArray); $i++){
+    //post array
+    $postArray = getSpecificPost($conn,0,$followerIdsArray[$i],$currentUserId, "", "User");
+    //add the array to the posts array
+    if ($postArray != 0){
+        $postsArray[] = $postArray;
+    }
+  }
+  return $postsArray;
 }
 
 function getCategoryData($conn){
@@ -468,89 +500,26 @@ function getCommentsArray($postId, $conn){
 function getPostsArray($conn, $currentCategory, $currentUserName, $currentUserId, $currentUserRank, $specificUserID = 0){
   $postsArray = [];
   //guery to get the ids of all the wanted posts
-  $postGetQuery = "SELECT postId FROM posttable";
+  $postGetQuery = "SELECT `postId` FROM `posttable`";
   if($currentCategory == 0){//if category is "all" select all the data
     $postGetQuery .= "";
     if ($specificUserID > 0){//if a specific user is selected
      $postGetQuery .= " WHERE userId = '$specificUserID'";
    }
   } else {
-    $postGetQuery .= " WHERE category = '$currentCategory'";
+    $postGetQuery .= " WHERE `category` = '$currentCategory'";
     if ($specificUserID > 0){//if a specific user is selected
-     $postGetQuery .= " AND userId = '$specificUserID'";
+     $postGetQuery .= " AND `userId` = '$specificUserID'";
    }
   }
   $postObject = $conn->query($postGetQuery);
   while($row = $postObject->fetch_assoc()){
     foreach($row as $key => $value){
-      //get all the post data from the row
-      $innerPostObject = $conn->query("SELECT * FROM posttable where postId = '$value'");
-      $row = $innerPostObject->fetch_assoc();
-      //use the category id gotten from post table to get the name of the category name from category table
-      $catValue = $row["category"];
-      $categoryPostObject = $conn->query("SELECT category FROM catagorytable where categoryId = '$catValue'");
-      $catName = $categoryPostObject->fetch_assoc();
-      //use the user id gotten from post table to get the name of the user name from category table
-      $userValue = $row["userId"];
-      //get the name of the user behind this post
-      $usernamePostObject = $conn->query("SELECT * FROM usertable where ID = '$userValue'");
-      $Username = $usernamePostObject->fetch_assoc();
-
-      if($Username["Username"] == $currentUserName){
-        //check to see if current post was made by user, if true add trash can
-        $canHaveTrashcan = 1;
-      } else if($currentUserRank == "Admin"){
-        //check if current user is admin, if true place trash cans on all posts
-        $canHaveTrashcan = 1;
-      } else{
-        $canHaveTrashcan = 0;
-      }
-
-      //collect variables to be used in the post creation
-      $postTimeElapsed = timeAgo($row["date"]);
-      $postUserImageURL = $Username["userImage"];
-      $postUserName = $Username["Username"];
-      $postText = $row["text"];
-      $postCatagory = $catName["category"];
-      //post type image or text
-      $postType = $row['postType'];
-      //post image if type contains image
-      $postImage = $row['imageURL'];
-      //collect emoti variables
-      $likes = $row["likes"];
-      $hates = $row["hates"];
-      $angers = $row["angers"];
-      $deads = $row["deads"];
-      //create array for emotis
-      $emotiArray = array($likes,$hates,$angers,$deads);
-      //get if user has emotis from emotisTable
-      $emotisObject = $conn->query("SELECT * FROM `emotitable` WHERE `userId`= '$currentUserId' AND `postId` = '$value'");
-      $emotis = $emotisObject->fetch_assoc();
-      $userLikes = $emotis["likes"];
-      $userHates = $emotis["hates"];
-      $userAngers = $emotis["angers"];
-      $userDeads = $emotis["deads"];
-      //create array for userEmotis
-      $userEmotiArray = array($userLikes,$userHates,$userAngers,$userDeads);
-      //get the comments as an array
-      $commentsArray = getCommentsArray($value, $conn);
-      //create an array for this post
-      $postArray = array(
-        $value,
-        $postTimeElapsed,
-        $postUserImageURL,
-        $postUserName,
-        $canHaveTrashcan,
-        $postCatagory,
-        $postText,
-        $emotiArray,
-        $commentsArray,
-        $userEmotiArray,
-        $postType,
-        $postImage,
-      );
+      $postArray = getSpecificPost($conn,1,$value,$currentUserId,$currentUserName,$currentUserRank);
       //add this post's data to the posts array
-      $postsArray[] = $postArray;
+      if($postArray){
+          $postsArray[] = $postArray;
+      }
     }
   }
   if ($postsArray){
@@ -559,6 +528,85 @@ function getPostsArray($conn, $currentCategory, $currentUserName, $currentUserId
     $postsArray = "";
     return $postsArray;
   }
+}
+
+function getSpecificPost($conn,$choiceType,$value,$currentUserId,$currentUserName = "",$currentUserRank = "User"){
+  //are we going to choose based on user ID or post
+  if($choiceType) {
+    //get all the post data based on the postID
+    $innerPostObject = $conn->query("SELECT * FROM `posttable` where `postId` = '$value'");
+  } else {
+    //get all the post data based on the user ID
+    $innerPostObject = $conn->query("SELECT * FROM `posttable` where `userId` = '$value'");
+  }
+  $row = $innerPostObject->fetch_assoc();
+
+  if (!isset($row['text'])){
+      return NULL;
+  }
+  //use the category id gotten from post table to get the name of the category name from category table
+  $catValue = $row["category"];
+  $categoryPostObject = $conn->query("SELECT `category` FROM `catagorytable` where `categoryId` = '$catValue'");
+  $catName = $categoryPostObject->fetch_assoc();
+  //use the user id gotten from post table to get the name of the user name from category table
+  $userValue = $row["userId"];
+  //get the name of the user behind this post
+  $usernamePostObject = $conn->query("SELECT * FROM `usertable` where `ID` = '$userValue'");
+  $Username = $usernamePostObject->fetch_assoc();
+
+  if($Username["Username"] == $currentUserName){
+    //check to see if current post was made by user, if true add trash can
+    $canHaveTrashcan = 1;
+  } else if($currentUserRank == "Admin"){
+    //check if current user is admin, if true place trash cans on all posts
+    $canHaveTrashcan = 1;
+  } else{
+    $canHaveTrashcan = 0;
+  }
+  //collect variables to be used in the post creation
+  $postTimeElapsed = timeAgo($row["date"]);
+  $postUserImageURL = $Username["userImage"];
+  $postUserName = $Username["Username"];
+  $postText = $row["text"];
+  $postCatagory = $catName["category"];
+  //post type image or text
+  $postType = $row['postType'];
+  //post image if type contains image
+  $postImage = $row['imageURL'];
+  //collect emoti variables
+  $likes = $row["likes"];
+  $hates = $row["hates"];
+  $angers = $row["angers"];
+  $deads = $row["deads"];
+  //create array for emotis
+  $emotiArray = array($likes,$hates,$angers,$deads);
+  //get if user has emotis from emotisTable
+  $emotisObject = $conn->query("SELECT * FROM `emotitable` WHERE `userId`= '$currentUserId' AND `postId` = '$value'");
+  $emotis = $emotisObject->fetch_assoc();
+  $userLikes = $emotis["likes"];
+  $userHates = $emotis["hates"];
+  $userAngers = $emotis["angers"];
+  $userDeads = $emotis["deads"];
+  //create array for userEmotis
+  $userEmotiArray = array($userLikes,$userHates,$userAngers,$userDeads);
+  //get the comments as an array
+  $commentsArray = getCommentsArray($value, $conn);
+  //create an array for this post
+  $postArray = array(
+    $value,
+    $postTimeElapsed,
+    $postUserImageURL,
+    $postUserName,
+    $canHaveTrashcan,
+    $postCatagory,
+    $postText,
+    $emotiArray,
+    $commentsArray,
+    $userEmotiArray,
+    $postType,
+    $postImage,
+  );
+  return $postArray;
 }
 
 ?>
