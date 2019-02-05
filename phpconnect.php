@@ -15,6 +15,7 @@ function connectToDB(){
 if($_POST){
   //if we clicked log out
   if(isset($_POST['logOutBtn'])){
+    include "includes/php/userClass.php";
     $userObj = new userClass();
     $userObj->logOut();
   }
@@ -51,75 +52,20 @@ if($_POST){
     postEmoticon($_POST['userId'],$_POST['postId'],$_POST['btnType']);
   }
 
-  session_start();
-  $userName = $_SESSION['userID'];
-
   //upload user image:
   if(isset($_FILES['fileInput'])){
+    session_start();
+    $userName = $_SESSION['userID'];
     $FR = $_FILES['fileInput'];
     uploadUserImage($userName,$FR['name'],$FR['size'],$FR['tmp_name'],$FR['type'],$FR['name']);
   }
 
   //upload user image:
   else if(isset($_FILES['file'])){
+    session_start();
+    $userName = $_SESSION['userID'];
     $FR = $_FILES['file'];
     uploadImage($userName,$FR['name'],$FR['size'],$FR['tmp_name'],$FR['type'],$FR['name']);
-  }
-}
-
-class userClass {
-  public $conn;
-
-  public function __construct($connToDB){
-    $this->conn = $connToDB;
-  }
-
-  public function loginUser($loginUsername,$loginPassword){
-    $passObject = $this->conn->query("SELECT `Password` FROM `usertable` WHERE `Username` = '$loginUsername'");
-    $pass = $passObject->fetch_assoc();
-    $hashedPassword = $pass['Password'];
-    if(password_verify($loginPassword, $hashedPassword)){
-      $whatHappened = "<b class='inputLabel'>Logged in as " . $loginUsername . "</b><br>";
-      //set user id for this session and go to mainfeed
-      $_SESSION['userID'] = $loginUsername;
-      header('location: mainFeed.php');
-      exit();
-    } else {
-      $whatHappened = "<b class='inputLabel'>Wrong Username or Password.</b><br>";
-    }
-  }
-
-  public function registerUser($registerUsername,$registerEmail,$registerPassword1,$registerPassword2){
-    $defaultPicture = 'userImages/userDefault.png';
-    $userCheckObject = $this->conn->query("SELECT `Username` FROM `usertable` WHERE `Username` = '$registerUsername'");
-    $userCheck = $userCheckObject->fetch_assoc();
-    if(!isset($userCheck)){
-      if ($registerPassword1 == $registerPassword2){
-        $hashedPassword = password_hash($registerPassword1, PASSWORD_DEFAULT);
-        $this->conn->query("INSERT INTO `usertable`(`ID`, `Username`, `Email`, `Password`,`userImage`,`Premissions`) VALUES (NULL,'$registerUsername','$registerEmail','$hashedPassword','$defaultPicture','0')");
-        //create default profile
-        $registerIdObj = $this->conn->query("SELECT `ID` from `usertable` WHERE `username` = '$registerUsername'");
-        $registerIdFetch = $registerIdObj->fetch_assoc();
-        $registerId = $registerIdFetch['ID'];
-        $this->conn->query("INSERT INTO `userprofiletable`(`userId`, `profileText`) VALUES ('$registerId','Welcome to my profile!')");
-        //set user id for this session and go to mainfeed
-        $_SESSION['firstLaunch'] = 1;
-        $_SESSION['userID'] = $registerUsername;
-        header('location: mainFeed.php');
-        exit();
-      } else {
-        $whatHappened = "<b class='inputLabel'>Make sure both passwords are the same!</b>";
-      }
-    } else {
-      $whatHappened = "<b class='inputLabel'>That username is taken!</b>";
-    }
-  }
-
-  public function logOut(){
-    //log out
-    session_start();
-    $_SESSION['userID'] = NULL;
-    header('location: index.php');
   }
 }
 

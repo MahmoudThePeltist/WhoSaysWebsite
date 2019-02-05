@@ -3,6 +3,7 @@
   //connect to DB
   $conn = connectToDB();
   session_start();
+  $errorText = "";
   //If current category is not set for this session, set it to default
   if(!isset($_SESSION['currentCategory'])){
     $_SESSION['currentCategory'] = 0;

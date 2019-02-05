@@ -613,6 +613,9 @@ h5{
 #registerForm{
   display: none;
 }
+#newPasswordForm{
+  display: none;
+}
 
 .container {
   position: left;
@@ -622,7 +625,7 @@ h5{
   margin: 50px;
   width: 400px;
   float:right;
-  height: 800px;
+  height: 1000px;
 }
 
 @media (max-width: 800px) {

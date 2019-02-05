@@ -24,9 +24,9 @@
     </div>
   </div>
   <div class="container">
+    <h1 class="loginTitle">Who Says?</h1>
     <div class="row">
-    <form class="loginForm" id="loginForm" method="POST">
-        <h1 class="loginTitle">Who Says?</h1>
+      <form class="loginForm" id="loginForm" method="POST">
         <h5 class="inputTitle" styles="style="font-family: 'Unlock', cursive"">Sign in</h5>
         <h3 class="formLabel">Name</h3>
         <input type="text" class="loginInput" name="loginUsername" tabindex="1" required>
@@ -35,30 +35,45 @@
         <div class="indexButtonHolder">
           <button class="loginbutton"  name="loginButton" tabindex="4">Login</button><br>
         </div>
-    </form>
+      </form>
     </div>
     <div class="row">
-    <form class="loginForm" id="registerForm"  method="POST">
-      <h1 class="loginTitle">Who Says?</h1>
-      <h5 class="inputTitle" styles="style="font-family: 'Unlock', cursive"">Sign up</h5>
-      <h3 class="formLabel">Name</h3>
-      <input type="text" class="loginInput" name="registerUsername" tabindex="1" required>
-      <h3 class="formLabel">Email</h3>
-      <input type="email" class="loginInput" name="registerEmail" tabindex="2" required>
-      <h3 class="formLabel">Password</h3>
-      <input type="password" class="loginInput" name="registerPassword1" tabindex="3" required>
-      <h3 class="formLabel">Confirm Password</h3>
-      <input type="password" class="loginInput" name="registerPassword2" tabindex="3" required><br>
-      <div class="indexButtonHolder">
-        <button class="registerbutton" name="registerButton" tabindex="5">Register</button><br>
-      </div>
-    </form>
+      <form class="loginForm" id="registerForm"  method="POST">
+        <h5 class="inputTitle" styles="style="font-family: 'Unlock', cursive"">Sign up</h5>
+        <h3 class="formLabel">Name</h3>
+        <input type="text" class="loginInput" name="registerUsername" tabindex="1" required>
+        <h3 class="formLabel">Email</h3>
+        <input type="email" class="loginInput" name="registerEmail" tabindex="2" required>
+        <h3 class="formLabel">Password</h3>
+        <input type="password" class="loginInput" name="registerPassword1" tabindex="3" required>
+        <h3 class="formLabel">Confirm Password</h3>
+        <input type="password" class="loginInput" name="registerPassword2" tabindex="3" required><br>
+        <div class="indexButtonHolder">
+          <button class="registerbutton" name="registerButton" tabindex="5">Register</button><br>
+        </div>
+      </form>
     </div>
-      <div class="indexButtonHolder">
-        <a id="regToggleButton" onClick="toggleRegistration()">Register</a>
-      </div>
-      <?php echo $whatHappened; ?>
-    </form>
+    <div class="row">
+      <form class="loginForm" id="newPasswordForm"  method="POST">
+        <h5 class="inputTitle" styles="style="font-family: 'Unlock', cursive"">Authenticate Email</h5>
+        <h3 class="formLabel">Name</h3>
+        <input type="text" class="loginInput" name="oldUserName" tabindex="1" required>
+        <h3 class="formLabel">Email</h3>
+        <input type="email" class="loginInput" name="oldEmail" tabindex="2" required>
+        <div class="indexButtonHolder">
+          <button class="registerbutton" name="sendEmailBtn" tabindex="5">Send Email code</button><br>
+        </div>
+      </form>
+    </div>
+    <div class="indexButtonHolder">
+      <a id="regToggleButton" onClick="toggleRegistration()">Register</a>
+      <?php
+      if(isset($userObj->loginFail)){
+        echo "<br><a id='passToggleButton' onClick='toggleChangePassword()'>Forgot password?</a>";
+      }
+      echo "<br> $whatHappened";
+      ?>
+    </div>
   </div>
   <script type="text/javascript" src="js/indexScripts.js"></script>
 </body>
