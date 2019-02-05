@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 26, 2019 at 12:52 PM
+-- Generation Time: Feb 05, 2019 at 01:46 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `commenttable` (
   `commentText` text NOT NULL,
   PRIMARY KEY (`commentID`),
   KEY `userID` (`userID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=40 ;
 
 --
 -- Dumping data for table `commenttable`
@@ -91,7 +91,11 @@ INSERT INTO `commenttable` (`commentID`, `parentID`, `userID`, `replyToPost`, `c
 (32, 55, 28, 1, '2019-01-18 18:45:35', 'I hate it'),
 (33, 69, 1, 1, '2019-01-21 11:44:27', 'This is good'),
 (34, 8, 1, 1, '2019-01-21 11:48:26', 'Yup'),
-(35, 27, 1, 1, '2019-01-24 06:30:35', 'Yeah that feature is available now!');
+(35, 27, 1, 1, '2019-01-24 06:30:35', 'Yeah that feature is available now!'),
+(36, 75, 1, 1, '2019-01-29 11:42:54', 'Thats pretty strange Mr Joe'),
+(37, 57, 1, 1, '2019-01-29 12:54:42', 'Lol thats pretty good man )'),
+(38, 74, 33, 1, '2019-02-01 18:50:53', 'lol busses'),
+(39, 82, 1, 1, '2019-02-03 14:04:00', 'I hate people who are antisemetic');
 
 -- --------------------------------------------------------
 
@@ -110,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `emotitable` (
   PRIMARY KEY (`ID`),
   KEY `userId` (`userId`,`postId`),
   KEY `postId` (`postId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
 
 --
 -- Dumping data for table `emotitable`
@@ -149,7 +153,17 @@ INSERT INTO `emotitable` (`ID`, `userId`, `postId`, `likes`, `hates`, `angers`, 
 (36, 1, 68, 1, 1, 0, 0),
 (38, 1, 53, 0, 1, 0, 0),
 (39, 1, 55, 1, 0, 0, 0),
-(40, 1, 57, 1, 0, 0, 0);
+(40, 1, 57, 1, 0, 0, 0),
+(41, 1, 75, 1, 1, 0, 1),
+(42, 29, 75, 1, 0, 0, 0),
+(43, 32, 75, 1, 0, 0, 0),
+(44, 1, 74, 1, 0, 0, 0),
+(45, 1, 76, 1, 0, 0, 0),
+(46, 1, 81, 1, 0, 0, 0),
+(47, 33, 81, 1, 0, 0, 0),
+(48, 33, 74, 1, 0, 0, 0),
+(49, 33, 82, 1, 0, 0, 0),
+(50, 1, 83, 1, 0, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -173,7 +187,7 @@ CREATE TABLE IF NOT EXISTS `posttable` (
   UNIQUE KEY `postId` (`postId`),
   KEY `userId` (`userId`),
   KEY `category` (`category`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=75 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=84 ;
 
 --
 -- Dumping data for table `posttable`
@@ -205,7 +219,80 @@ INSERT INTO `posttable` (`postId`, `userId`, `date`, `postType`, `text`, `imageU
 (55, 1, '2019-01-17 13:31:56', 3, 'I hate juice', 'postImages/user_AdminMahmoud/1547731916.png', 1, 1, 0, 0, 0),
 (57, 28, '2019-01-18 18:47:49', 3, 'Look at this funny comic i found', 'postImages/user_Yasser_Bader/1547837269.jpg', 4, 1, 0, 0, 0),
 (68, 1, '2019-01-21 08:14:00', 2, 'NONE', 'postImages/user_AdminMahmoud/1548058440.jpg', 6, 1, 1, 0, 0),
-(74, 1, '2019-01-23 18:54:47', 3, 'Why is this like this?', 'postImages/user_AdminMahmoud/1548269686.jpg', 1, 0, 0, 0, 0);
+(74, 1, '2019-01-23 18:54:47', 3, 'Why is this like this?', 'postImages/user_AdminMahmoud/1548269686.jpg', 1, 2, 0, 0, 0),
+(75, 29, '2019-01-26 14:32:41', 1, 'Hey my name is crazy old joe i like soccer and exclimation marks!!!!', 'NONE', 1, 3, 1, 0, 1),
+(76, 1, '2019-01-29 12:56:00', 1, 'I just saw Blade Runner (1982) what a  weird movie but i think i liked it )', 'NONE', 3, 1, 0, 0, 0),
+(77, 1, '2019-01-30 10:10:09', 3, 'Im just such a big fan of Hopsin', 'postImages/user_AdminMahmoud/1548843008.png', 5, 0, 0, 0, 0),
+(81, 1, '2019-01-30 10:55:37', 3, 'Lol check this dog out bro', 'postImages/user_AdminMahmoud/1548845737.jpg', 4, 2, 0, 0, 0),
+(82, 33, '2019-02-01 18:52:15', 1, 'I really like the new eminem album whos the feat on Lucky You?', 'NONE', 5, 1, 0, 0, 0),
+(83, 1, '2019-02-03 14:04:34', 3, 'Nice', 'postImages/user_AdminMahmoud/1549202674.jpg', 1, 1, 0, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `userfollowtable`
+--
+
+CREATE TABLE IF NOT EXISTS `userfollowtable` (
+  `relationshipId` int(11) NOT NULL AUTO_INCREMENT,
+  `followerId` int(11) NOT NULL,
+  `followedId` int(11) NOT NULL,
+  `relationshipDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`relationshipId`),
+  KEY `followerId` (`followerId`),
+  KEY `followedId` (`followedId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+
+--
+-- Dumping data for table `userfollowtable`
+--
+
+INSERT INTO `userfollowtable` (`relationshipId`, `followerId`, `followedId`, `relationshipDate`) VALUES
+(7, 1, 25, '2019-01-27 11:33:24'),
+(10, 32, 29, '2019-01-28 10:37:38'),
+(11, 32, 1, '2019-01-28 10:37:49'),
+(12, 32, 3, '2019-01-28 10:38:02'),
+(13, 32, 20, '2019-01-28 10:38:14'),
+(14, 32, 6, '2019-01-28 10:38:25'),
+(15, 32, 17, '2019-01-28 10:38:33'),
+(16, 1, 32, '2019-01-28 11:47:27'),
+(17, 1, 29, '2019-01-31 08:28:43'),
+(18, 1, 28, '2019-01-31 14:28:08'),
+(19, 1, 27, '2019-01-31 14:28:17'),
+(20, 33, 1, '2019-02-01 18:52:50');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `userprofiletable`
+--
+
+CREATE TABLE IF NOT EXISTS `userprofiletable` (
+  `userId` int(11) NOT NULL,
+  `profileText` text NOT NULL,
+  `themeA` int(11) NOT NULL DEFAULT '0',
+  `themeB` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `userprofiletable`
+--
+
+INSERT INTO `userprofiletable` (`userId`, `profileText`, `themeA`, `themeB`) VALUES
+(1, 'I actually just hate jews', 0, 0),
+(2, 'Welcome to my profile :)', 0, 0),
+(3, 'Welcome to my profile :)', 0, 0),
+(6, 'Welcome to my profile :)', 0, 0),
+(17, 'Welcome to my profile :)', 0, 0),
+(20, 'Welcome to my profile :)', 0, 0),
+(25, 'Welcome to my profile :)', 0, 0),
+(27, 'Welcome to my profile :)', 0, 0),
+(28, 'Welcome to my profile :)', 0, 0),
+(29, 'Welcome to my profile :)', 0, 0),
+(31, 'Welcome to my profile!', 0, 0),
+(32, 'Welcome to my profile!', 0, 0),
+(33, 'Welcome to my profile!', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -222,14 +309,14 @@ CREATE TABLE IF NOT EXISTS `usertable` (
   `userImage` text NOT NULL,
   `Premissions` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=34 ;
 
 --
 -- Dumping data for table `usertable`
 --
 
 INSERT INTO `usertable` (`ID`, `Username`, `Email`, `Password`, `joinDate`, `userImage`, `Premissions`) VALUES
-(1, 'AdminMahmoud', 'mahmoudaburascea@gmail.com', '$2y$10$dJFCXf1a0f7CPEa8e.z76OFrCk8hAmOAhqJI57U/uflyTTn6i12Wm', '2018-12-17 10:19:20', 'userImages/userAdminMahmoud1546867221.jpg', 1),
+(1, 'AdminMahmoud', 'mahmoudaburascea@gmail.com', '$2y$10$dJFCXf1a0f7CPEa8e.z76OFrCk8hAmOAhqJI57U/uflyTTn6i12Wm', '2018-12-17 10:19:20', 'userImages/userAdminMahmoud1549202833.jpg', 1),
 (2, 'AdminAla', 'ala@gmail.com', '$2y$10$TpFqWrMxxBnUXXDZ4sK9p.Bb7yQ568nlKVo0Mq0vMGItTU30L64La', '2018-12-17 10:19:20', 'userImages/userDefault.png', 1),
 (3, 'MarkBlack', 'MarkBlack@Flum.com', '$2y$10$NdwTG6HGU5kKZSWHcZbzuOqZir0b8OdVFxM3fhRIvQJwhknC99SiG', '2018-12-17 10:19:20', 'userImages/user0.gif', 0),
 (6, 'John Black', 'JohnBlack1990@gmail.com', '$2y$10$k5s5ZqpI6AAQRHYUtJW8Eu63POfq6eTkJ7WgXgOAIw7ouEjnlZcju', '2018-12-17 10:19:20', 'userImages/userDefault.png', 0),
@@ -244,7 +331,11 @@ INSERT INTO `usertable` (`ID`, `Username`, `Email`, `Password`, `joinDate`, `use
 (25, 'Mona', 'MonaBuras@Gmail.com', '$2y$10$oS3LSsQN.rEQnm9kHzMD7OxwTf8ecBu7dQy8bwjhnOTz3ugckRERe', '2019-01-04 17:07:57', 'userImages/userMona1546621900.jpg', 0),
 (26, 'AlexBalex', 'AlexBalexEmail@email.com', '$2y$10$E3lQW8h7V/7i3retty34ruLC4dVtidj4vEq5TnKyBBh/HwL67PKJ6', '2019-01-10 10:15:58', 'userImages/userDefault.png', 0),
 (27, 'FlimsyShmuck10', 'FlimsyShmuck10@yahoo.com', '$2y$10$VbfiIHlNU0TxtL4Jd4fsFesEz.kICCisPS49vvkXKRhY4DIV5xVQ6', '2019-01-14 12:37:47', 'userImages/userFlimsyShmuck101547469627.jpg', 0),
-(28, 'Yasser Bader', 'YasserBader@Fader.Kader', '$2y$10$iCaYNEukzpP3d7J6vEh5wOcyehI8zTd8KHj73z/jOWzT0QTtNZRRe', '2019-01-18 18:42:52', 'userImages/userYasser_Bader1547837339.jpg', 0);
+(28, 'Yasser Bader', 'YasserBader@Fader.Kader', '$2y$10$iCaYNEukzpP3d7J6vEh5wOcyehI8zTd8KHj73z/jOWzT0QTtNZRRe', '2019-01-18 18:42:52', 'userImages/userYasser_Bader1547837339.jpg', 0),
+(29, 'CrazyOldJoe', 'CrazyOldJoe@gmail.com', '$2y$10$8XQVtLd21sblhdhjv4Kq4Ov35GmD/sI130tUwpePD1hNJzJRLHY2q', '2019-01-26 14:32:11', 'userImages/userDefault.png', 0),
+(31, 'Peltist_Black', 'peltist_black@gmail.com', '$2y$10$sUQmnifOn1ZmW3P2jlKoC.25PxCE9s6dh/NRjnAX/rVXouzHYwMlG', '2019-01-26 15:20:03', 'userImages/userPeltist_Black1548516443.jpg', 0),
+(32, 'EvilBoy666', 'EvilBoy666@HeckMail.com', '$2y$10$qai8rMqdKmVUS6Bk/725AemqAind/s2uyiPd23usFZfSW8yZQafL2', '2019-01-28 10:37:22', 'userImages/userDefault.png', 0),
+(33, 'Mohamed Adam', 'mohamedadam.gh93@gmail.com', '$2y$10$mvUh4YeKNbKc4m1Y8wMInunQAI8inPv.lB5tCzSE1tELpayHckzTy', '2019-02-01 18:49:10', 'userImages/userDefault.png', 0);
 
 --
 -- Constraints for dumped tables
@@ -269,6 +360,19 @@ ALTER TABLE `emotitable`
 ALTER TABLE `posttable`
   ADD CONSTRAINT `posttable_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `usertable` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `posttable_ibfk_2` FOREIGN KEY (`category`) REFERENCES `catagorytable` (`categoryId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `userfollowtable`
+--
+ALTER TABLE `userfollowtable`
+  ADD CONSTRAINT `userfollowtable_ibfk_1` FOREIGN KEY (`followerId`) REFERENCES `usertable` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `userfollowtable_ibfk_2` FOREIGN KEY (`followedId`) REFERENCES `usertable` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `userprofiletable`
+--
+ALTER TABLE `userprofiletable`
+  ADD CONSTRAINT `userprofiletable_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `usertable` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
